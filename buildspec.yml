@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+  pre_build:
+    commands:
+      - npm ci
+      - cd src/client/frontend
+      - echo Installing missing dependencies...
+      - echo Build started on `date`
+      - npm run build
+  build:
+    commands:
+  post_build:
+    commands:
+artifacts:
+  files:
+    - "**/*"
+  base-directory: "src/client/dist/"
