@@ -1,4 +1,4 @@
-interface CSVData {
+export interface CSVData {
   "Posted Date": Date;
   "Reference Number": number;
   Payee: string;
@@ -6,7 +6,3 @@ interface CSVData {
   Amount: string;
   Category: string;
 }
-
-export type DataType = {
-  data: CSVData[];
-};
