@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { DataType } from "./types/DataType.ts";
+import { CSVData } from "./types/DataType.ts";
 
-const DataContext = createContext<DataType | null>(null);
+const DataContext = createContext<CSVData[]>(new Array<CSVData>());
 
 export default DataContext;

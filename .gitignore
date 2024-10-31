@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 
 # Project data
-server/original-transactions-data/*
-server/saved-transactions-data/*
+src/server/original-transactions-data/*
+src/server/saved-transactions-data/*
 old/*

@@ -31,7 +31,7 @@ export default function App() {
               <Link to={`/pages/EditTransactions`}>Edit Transactions</Link>
             </li>
             <li>
-              <Link to={`/pages/ViewTransactions`}>View Transactions</Link>
+              <Link to={`/`}>View Transactions</Link>
             </li>
           </ul>
         </nav>

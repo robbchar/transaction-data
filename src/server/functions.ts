@@ -23,7 +23,11 @@ export function getContentsOfFiles(directoryPath: string, fileType: string) {
 
   return matchingFiles.reduce((result, file) => {
     const filePath = path.join(directoryPath, file);
-    const fileContent = fs.readFileSync(filePath, "utf-8");
+    const fileContent = getContentsOfFile(filePath);
     return result + fileContent + "\n";
   }, "");
+}
+
+export function getContentsOfFile(filePath: string) {
+  return fs.readFileSync(filePath, "utf-8");
 }
