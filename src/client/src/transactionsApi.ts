@@ -16,10 +16,6 @@ export const getSavedTransactions = () =>
 
 export const saveTransactions = (transactions: CSVData[]) => {
   let csvString = Papa.unparse(transactions);
-  console.log(`csvString: ${csvString}`);
-  console.log(
-    `encodeURIComponent(csvString): ${encodeURIComponent(csvString)}`
-  );
   fetch(`/api/save-transactions`, {
     method: "PUT",
     body: `{ "contents": "${encodeURIComponent(csvString)}" }`,

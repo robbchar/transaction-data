@@ -32,13 +32,11 @@ interface CSVSaveParams {
 
 // curl -X PUT -H 'Content-Type: application/json' -d '{ "contents": "Posted Date,Reference Number,Payee,Address,Amount,Category" }' http://localhost:3000/api/save-transactions
 router.put("/save-transactions", (req: Request<CSVSaveParams>, res) => {
-  console.log(`req.body.contents ${req.body.contents}`);
   const contents = decodeURIComponent(req.body.contents);
   const filePath = path.join(
     import.meta.dirname,
     "/saved-transactions-data/transactions.csv"
   );
-  console.log(`contents ${contents}`);
   fs.writeFileSync(filePath, contents, {
     encoding: "utf8",
     mode: 0o666,
