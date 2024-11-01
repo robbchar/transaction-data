@@ -5,27 +5,27 @@ const RootDiv = styled.div`
   display: flex;
 `;
 
-const SideBarDiv = styled.div`
+const SideBarNav = styled.nav`
   height: 100vh;
-  width: 20rem;
   background-color: #dadee3;
   padding-left: 1rem;
+  width: 20rem;
 `;
 
-const DetailrDiv = styled.div`
-  height: 100vh;
-  width: auto;
+const MainContent = styled.main`
   background-color: #f9fafc;
-  flex-grow: 1;
-  padding-left: 1rem;
+  padding: 1rem;
+  height: 100vh;
+  overflow-y: auto;
+  flex: 1;
 `;
 
 export default function App() {
   return (
     <RootDiv>
-      <SideBarDiv>
+      <SideBarNav>
         <h1>Transactions</h1>
-        <nav>
+        <div>
           <ul>
             <li>
               <Link to={`/pages/EditTransactions`}>Edit Transactions</Link>
@@ -34,11 +34,11 @@ export default function App() {
               <Link to={`/`}>View Transactions</Link>
             </li>
           </ul>
-        </nav>
-      </SideBarDiv>
-      <DetailrDiv>
+        </div>
+      </SideBarNav>
+      <MainContent>
         <Outlet />
-      </DetailrDiv>
+      </MainContent>
     </RootDiv>
   );
 }

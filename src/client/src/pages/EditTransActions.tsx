@@ -1,9 +1,16 @@
 import { useContext, useState } from "react";
 import Papa from "papaparse";
+import { styled } from "styled-components";
 
 import DataContext from "../DataContext.tsx";
 import { CSVData, getTransactionById } from "../types/DataType.ts";
 import { saveTransactions } from "../transactionsApi.ts";
+import Categories from "../components/Categories.tsx";
+
+const TransactionLI = styled.li`
+  list-style: none;
+  display: flex;
+`;
 
 export default function EditTransactions() {
   const context = useContext(DataContext);
@@ -41,17 +48,31 @@ export default function EditTransactions() {
       oldTransaction["Posted Date"] = newTransaction["Posted Date"];
     });
 
-    setData(context);
+    setData([...context]);
     saveTransactions(context);
   };
 
   return (
     <>
       {!context ? (
-        <span>content did not load</span>
+        <span>data did not load</span>
       ) : (
         <div>
-          <span>Total number of transactions: {data?.length ?? 0}</span>
+          <ul>
+            {context.map((transaction, index) => (
+              <TransactionLI key={index}>
+                <div>Posted Date: {transaction["Posted Date"].toString()}</div>
+                <div>Payee: {transaction.Payee}</div>
+                <div>Amount: {transaction.Amount}</div>
+                <div>
+                  Category:{" "}
+                  <Categories
+                    chosenCategory={transaction.Category}
+                  ></Categories>
+                </div>
+              </TransactionLI>
+            ))}
+          </ul>
           <button onClick={loadNewTransactions}>Load new transactions.</button>
         </div>
       )}
