@@ -45,39 +45,52 @@ const items: Array<string> = [
   "Mortgage",
   "Car payment",
   "Car Charging",
-  "Pet Food",
+  "Groceries",
+  "Eating out",
+  "Eating In",
+  "Alcohol/Bars",
+  "Pet - Food",
+  "Pet - Boarding",
+  "Pet - Grooming",
+  "Pet - Misc",
+  "Pet - Vet",
   "Electricity",
   "Phone",
   "Internet",
   "Medical",
   "Medicine",
   "Insurance",
+  "Clothes",
   "Miscelaneous",
   "Salon",
   "Loans/Finance",
   "Gifts",
-  "Alcohol/Bars",
   "Games",
   "Movies",
   "Concerts",
   "Subscriptions",
   "Entertainment",
+  "Taxi/Lyft",
+  "Hotel",
+  "Mystery Transaction",
 ];
 
 interface CategoriesProps {
   open: Boolean;
   setOpen: Function;
-  chosenCategory: string;
+  chosenCategoryLabel: string;
+  categoryChosen: Function;
 }
 
 const Categories: React.FC<CategoriesProps> = forwardRef(
-  ({ open, setOpen, chosenCategory }, ref) => {
+  ({ open, setOpen, chosenCategoryLabel, categoryChosen }, ref) => {
     const [selectedText, setSelectedText] = useState<string>(
-      chosenCategory ?? " -- Select -- "
+      chosenCategoryLabel ?? " -- Select -- "
     );
 
-    const itemClicked = (itemName: string) => {
-      setSelectedText(itemName);
+    const categoryClicked = (categoryName: string) => {
+      setSelectedText(categoryName);
+      categoryChosen(categoryName);
       setOpen(false);
     };
 
@@ -87,7 +100,7 @@ const Categories: React.FC<CategoriesProps> = forwardRef(
         {open ? (
           <MenuUl>
             {items.map((value, index) => (
-              <li key={index} onClick={() => itemClicked(value)}>
+              <li key={index} onClick={() => categoryClicked(value)}>
                 {value}
               </li>
             ))}

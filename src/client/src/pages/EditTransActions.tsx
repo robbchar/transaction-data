@@ -13,6 +13,15 @@ const TransactionLI = styled.li`
   justify-content: space-between;
 `;
 
+const formatPrice = (price: number): string => {
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  return formatter.format(price);
+};
+
 export default function EditTransactions() {
   const context = useContext(DataContext);
   const [data, setData] = useState<CSVData[]>(context);
@@ -65,12 +74,16 @@ export default function EditTransactions() {
               <TransactionLI key={index}>
                 <div>Posted Date: {transaction["Posted Date"].toString()}</div>
                 <div>Payee: {transaction.Payee}</div>
-                <div>Amount: {transaction.Amount}</div>
+                <div>Amount: {formatPrice(transaction.Amount)}</div>
                 <div>
                   <Categories
-                    chosenCategory={transaction.Category}
+                    chosenCategoryLabel={transaction.Category}
                     open={false}
                     setOpen={() => {}}
+                    categoryChosen={(newCategoryLabel: string) => {
+                      transaction.Category = newCategoryLabel;
+                      saveTransactions(context);
+                    }}
                   ></Categories>
                 </div>
               </TransactionLI>

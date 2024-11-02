@@ -3,7 +3,7 @@ export interface CSVData {
   "Reference Number": number | string;
   Payee: string;
   Address: string;
-  Amount: string;
+  Amount: number;
   Category: string;
 }
 
