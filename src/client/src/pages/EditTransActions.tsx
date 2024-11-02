@@ -10,6 +10,7 @@ import Categories from "../components/Categories.tsx";
 const TransactionLI = styled.li`
   list-style: none;
   display: flex;
+  justify-content: space-between;
 `;
 
 export default function EditTransactions() {
@@ -58,6 +59,7 @@ export default function EditTransactions() {
         <span>data did not load</span>
       ) : (
         <div>
+          <h2>Transactions to manage:</h2>
           <ul>
             {context.map((transaction, index) => (
               <TransactionLI key={index}>
@@ -65,9 +67,10 @@ export default function EditTransactions() {
                 <div>Payee: {transaction.Payee}</div>
                 <div>Amount: {transaction.Amount}</div>
                 <div>
-                  Category:{" "}
                   <Categories
                     chosenCategory={transaction.Category}
+                    open={false}
+                    setOpen={() => {}}
                   ></Categories>
                 </div>
               </TransactionLI>

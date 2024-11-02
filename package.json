@@ -9,6 +9,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "babel-plugin-styled-components": "^2.1.4",
     "body-parser": "^1.20.3",
     "cross-env": "^7.0.3",
     "express": "^4.18.2",
