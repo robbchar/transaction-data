@@ -23,7 +23,6 @@ for (const name of Object.keys(nets)) {
     }
   }
 }
-console.log();
 
 const app = express();
 app.use(bodyParser.json());
