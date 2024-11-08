@@ -1,4 +1,4 @@
-import { forwardRef, MutableRefObject, useState } from "react";
+import { useState } from "react";
 import { styled } from "styled-components";
 
 import withClickOutside from "../hooks/withClickOutside";
@@ -82,33 +82,36 @@ interface CategoriesProps {
   categoryChosen: Function;
 }
 
-const Categories: React.FC<CategoriesProps> = forwardRef(
-  ({ open, setOpen, chosenCategoryLabel, categoryChosen }, ref) => {
-    const [selectedText, setSelectedText] = useState<string>(
-      chosenCategoryLabel ?? " -- Select -- "
-    );
+const Categories: React.FC<CategoriesProps> = ({
+  open,
+  setOpen,
+  chosenCategoryLabel,
+  categoryChosen,
+}) => {
+  const [selectedText, setSelectedText] = useState<string>(
+    chosenCategoryLabel ?? " -- Select -- "
+  );
 
-    const categoryClicked = (categoryName: string) => {
-      setSelectedText(categoryName);
-      categoryChosen(categoryName);
-      setOpen(false);
-    };
+  const categoryClicked = (categoryName: string) => {
+    setSelectedText(categoryName);
+    categoryChosen(categoryName);
+    setOpen(false);
+  };
 
-    return (
-      <DropdownDiv ref={ref}>
-        <button onClick={() => setOpen(!open)}>{selectedText}</button>
-        {open ? (
-          <MenuUl>
-            {items.map((value, index) => (
-              <li key={index} onClick={() => categoryClicked(value)}>
-                {value}
-              </li>
-            ))}
-          </MenuUl>
-        ) : null}
-      </DropdownDiv>
-    );
-  }
-);
+  return (
+    <DropdownDiv>
+      <button onClick={() => setOpen(!open)}>{selectedText}</button>
+      {open ? (
+        <MenuUl>
+          {items.map((value, index) => (
+            <li key={index} onClick={() => categoryClicked(value)}>
+              {value}
+            </li>
+          ))}
+        </MenuUl>
+      ) : null}
+    </DropdownDiv>
+  );
+};
 
 export default withClickOutside(Categories);
