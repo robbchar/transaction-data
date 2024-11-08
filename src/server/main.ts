@@ -33,6 +33,8 @@ app.use(errorHandler);
 
 ViteExpress.listen(app, 3000, () =>
   console.log(
-    `Server is listening at http://localhost:3000 and http://${results["Wi-Fi"][0]}:3000`
+    results["Wi-Fi"] !== undefined ? 
+    `Server is listening at http://localhost:3000 and http://${results["Wi-Fi"][0]}:3000` 
+    : `Server is listening at http://localhost:3000`
   )
 );
