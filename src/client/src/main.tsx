@@ -7,7 +7,7 @@ import App from "./App.tsx";
 import DataContext from "./DataContext.tsx";
 import ErrorPage from "./pages/ErrorPage.tsx";
 import ViewTransactions from "./pages/ViewTransactions.tsx";
-import EditTransactions from "./pages/EditTransactions.tsx";
+import EditTransactions from "./pages/EditTransActions.tsx";
 import { getSavedTransactions } from "./transactionsApi.ts";
 
 const data = await getSavedTransactions();

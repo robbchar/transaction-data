@@ -3,7 +3,7 @@
 {
 	"name": "Default Linux Universal",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/universal:2-linux"
+	"image": "mcr.microsoft.com/devcontainers/universal:2-linux",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -19,4 +19,9 @@
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
+
+	"mounts": [
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}\\Projects\\transaction-data\\src\\server\\saved-transactions-data\\,target=/workspaces/transaction-data/src/server/saved-transactions-data,type=bind,consistency=cached",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}\\Projects\\transaction-data\\src\\server\\original-transactions-data\\,target=/workspaces/transaction-data/src/server/original-transactions-data,type=bind,consistency=cached",
+	]
 }
