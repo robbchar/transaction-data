@@ -57,3 +57,16 @@ export enum Category {
 export type TransactionCategories = {
   [key in Category]?: number;
 };
+
+export type OrganizedMonths = {
+  [id: number]: CSVData[];
+}
+
+export type OrganizedYears = {
+  [id: number]: OrganizedMonths;
+}
+
+export type ContextType = {
+  organizedData: OrganizedYears;
+  dataToView: CSVData[];
+}

@@ -8,9 +8,12 @@ import DataContext from "./DataContext.tsx";
 import ErrorPage from "./pages/ErrorPage.tsx";
 import ViewTransactions from "./pages/ViewTransactions.tsx";
 import EditTransactions from "./pages/EditTransActions.tsx";
-import { getSavedTransactions } from "./transactionsApi.ts";
+import { getDataToView, getSavedTransactions } from "./transactionsApi.ts";
+import { ContextType } from "./types/DataType.ts";
 
-const data = await getSavedTransactions();
+const contextData: ContextType = { organizedData: {}, dataToView: [] };
+contextData.organizedData = await getSavedTransactions();
+contextData.dataToView = getDataToView(contextData.organizedData);
 
 const router = createBrowserRouter([
   {
@@ -32,7 +35,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <DataContext.Provider value={data}>
+    <DataContext.Provider value={contextData}>
       <RouterProvider router={router} />
     </DataContext.Provider>
   </StrictMode>

@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { CSVData } from "./types/DataType.ts";
+import { ContextType } from "./types/DataType.ts";
 
-const DataContext = createContext<CSVData[]>(new Array<CSVData>());
+const DataContext = createContext<ContextType>({ organizedData: {}, dataToView: [] });
 
 export default DataContext;

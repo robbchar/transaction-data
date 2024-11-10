@@ -9,7 +9,7 @@ enum ChartTypes {
 
 function getPropsForChartType(
   chartType: string,
-  context: CSVData[]
+  dataToView: CSVData[]
 ): ReactGoogleChartProps {
   const chartOptions: ReactGoogleChartProps = {
     chartType: "PieChart",
@@ -18,7 +18,7 @@ function getPropsForChartType(
     case ChartTypes.Pie:
       chartOptions.chartType = "PieChart";
       const data: TransactionCategories = {};
-      context.forEach((csvData) => {
+      dataToView.forEach((csvData) => {
         const key = csvData.Category;
         const amounnt =
           csvData.Amount >= 0 ? csvData.Amount : csvData.Amount * -1;
@@ -61,18 +61,22 @@ export default function ViewTransactions() {
   });
 
   useEffect(() => {
-    setChartOptions(getPropsForChartType("PieChart", context));
+    setChartOptions(getPropsForChartType("PieChart", context.dataToView));
   }, []);
 
   function chartSelected(event: ChangeEvent<HTMLSelectElement>): void {
-    setChartOptions(getPropsForChartType(event.target.value, context));
+    setChartOptions(getPropsForChartType(event.target.value, context.dataToView));
   }
 
   return (
     <>
-      <select name="charts" onChange={chartSelected}>
-        <option value={ChartTypes.Pie.toString()}>{ChartTypes.Pie}</option>
-      </select>
+      <div>
+        <span>Choose a chart type: </span>
+        <select name="charts" onChange={chartSelected}>
+          <option value={ChartTypes.Pie.toString()}>{ChartTypes.Pie}</option>
+        </select>
+      </div>
+      <div><span>Current Dates: </span></div>
       <Chart {...chartOptions} />
     </>
   );
