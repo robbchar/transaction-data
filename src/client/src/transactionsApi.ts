@@ -48,6 +48,7 @@ export const getSavedTransactions = async () => {
       }).data;
     });
 
+  // this is supposed to have to happen I can't find how to get papaparse to parse Dates though
   data.forEach((transaction) => transaction["Posted Date"] = transaction["Posted Date"] ? new Date(transaction["Posted Date"]) : transaction["Posted Date"]);
 
   return organizedData(data);
