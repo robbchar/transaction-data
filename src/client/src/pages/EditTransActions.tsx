@@ -3,7 +3,7 @@ import Papa from "papaparse";
 import { styled } from "styled-components";
 
 import DataContext from "../DataContext.tsx";
-import { CSVData, getTransactionById } from "../types/DataType.ts";
+import { ContextType, CSVData, getTransactionById } from "../types/DataType.ts";
 import { saveTransactions } from "../transactionsApi.ts";
 import Categories from "../components/Categories.tsx";
 
@@ -11,6 +11,7 @@ const TransactionLI = styled.li`
   list-style: none;
   display: flex;
   justify-content: space-between;
+  padding-bottom: .1rem;
 `;
 
 const formatPrice = (price: number): string => {
@@ -24,7 +25,7 @@ const formatPrice = (price: number): string => {
 
 export default function EditTransactions() {
   const context = useContext(DataContext);
-  const [data, setData] = useState<CSVData[]>(context);
+  const [data, setData] = useState<ContextType>(context);
 
   const loadNewTransactions = async () => {
     const newData = await fetch(`/api/get-original-transactions`)
@@ -46,10 +47,10 @@ export default function EditTransactions() {
         return;
       const oldTransaction = getTransactionById(
         newTransaction["Reference Number"] as number,
-        context
+        context.originalData
       );
       if (oldTransaction === null) {
-        context.push(newTransaction);
+        context.originalData.push(newTransaction);
         return;
       }
 
@@ -58,8 +59,8 @@ export default function EditTransactions() {
       oldTransaction["Posted Date"] = newTransaction["Posted Date"];
     });
 
-    setData([...context]);
-    saveTransactions(context);
+    setData(context);
+    saveTransactions(context.originalData);
   };
 
   return (
@@ -70,19 +71,19 @@ export default function EditTransactions() {
         <div>
           <h2>Transactions to manage:</h2>
           <ul>
-            {context.map((transaction, index) => (
+            {context.dataToView.map((transaction, index) => (
               <TransactionLI key={index}>
-                <div>Posted Date: {transaction["Posted Date"].toString()}</div>
+                <div>Posted Date: {`${transaction["Posted Date"].getDay()}\\${transaction["Posted Date"].getMonth()}\\${transaction["Posted Date"].getFullYear()}`}</div>
                 <div>Payee: {transaction.Payee}</div>
                 <div>Amount: {formatPrice(transaction.Amount)}</div>
                 <div>
                   <Categories
                     chosenCategoryLabel={transaction.Category}
                     open={false}
-                    setOpen={() => {}}
+                    setOpen={() => { }}
                     categoryChosen={(newCategoryLabel: string) => {
                       transaction.Category = newCategoryLabel;
-                      saveTransactions(context);
+                      saveTransactions(context.originalData);
                     }}
                   ></Categories>
                 </div>

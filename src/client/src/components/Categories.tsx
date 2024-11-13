@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import { styled } from "styled-components";
 
 import withClickOutside from "../hooks/withClickOutside";
@@ -82,12 +82,12 @@ interface CategoriesProps {
   categoryChosen: Function;
 }
 
-const Categories: React.FC<CategoriesProps> = ({
+const Categories: React.FC<CategoriesProps> = forwardRef(({
   open,
   setOpen,
   chosenCategoryLabel,
   categoryChosen,
-}) => {
+}, ref) => {
   const [selectedText, setSelectedText] = useState<string>(
     chosenCategoryLabel ?? " -- Select -- "
   );
@@ -99,7 +99,7 @@ const Categories: React.FC<CategoriesProps> = ({
   };
 
   return (
-    <DropdownDiv>
+    <DropdownDiv ref={ref}>
       <button onClick={() => setOpen(!open)}>{selectedText}</button>
       {open ? (
         <MenuUl>
@@ -112,6 +112,7 @@ const Categories: React.FC<CategoriesProps> = ({
       ) : null}
     </DropdownDiv>
   );
-};
+}
+);
 
 export default withClickOutside(Categories);

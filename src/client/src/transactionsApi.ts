@@ -2,7 +2,7 @@ import Papa from "papaparse";
 
 import { CSVData, OrganizedYears } from "./types/DataType";
 
-const organizedData = (data: CSVData[]): OrganizedYears => {
+export const organizeTheData = (data: CSVData[]): OrganizedYears => {
   const organizedData: OrganizedYears = {};
 
   data.forEach((transaction: CSVData) => {
@@ -36,7 +36,7 @@ export const getDataToView = (organizedData: OrganizedYears): CSVData[] => {
   return dataToView;
 };
 
-export const getSavedTransactions = async () => {
+export const getSavedTransactions = async (): Promise<CSVData[]> => {
   const data = await fetch(`/api/get-saved-transactions`)
     .then((response) => response.text())
     .then((responseText) => {
@@ -48,10 +48,10 @@ export const getSavedTransactions = async () => {
       }).data;
     });
 
-  // this is supposed to have to happen I can't find how to get papaparse to parse Dates though
+  // this isn't supposed to have to happen I can't find how to get papaparse to parse Dates though
   data.forEach((transaction) => transaction["Posted Date"] = transaction["Posted Date"] ? new Date(transaction["Posted Date"]) : transaction["Posted Date"]);
 
-  return organizedData(data);
+  return data;
 };
 
 export const saveTransactions = (transactions: CSVData[]) => {

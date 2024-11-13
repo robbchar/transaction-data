@@ -8,11 +8,11 @@ import DataContext from "./DataContext.tsx";
 import ErrorPage from "./pages/ErrorPage.tsx";
 import ViewTransactions from "./pages/ViewTransactions.tsx";
 import EditTransactions from "./pages/EditTransActions.tsx";
-import { getDataToView, getSavedTransactions } from "./transactionsApi.ts";
+import { getDataToView, getSavedTransactions, organizeTheData } from "./transactionsApi.ts";
 import { ContextType } from "./types/DataType.ts";
 
-const contextData: ContextType = { organizedData: {}, dataToView: [] };
-contextData.organizedData = await getSavedTransactions();
+const contextData: ContextType = { organizedData: {}, dataToView: [], originalData: await getSavedTransactions() };
+contextData.organizedData = organizeTheData(contextData.originalData);
 contextData.dataToView = getDataToView(contextData.organizedData);
 
 const router = createBrowserRouter([

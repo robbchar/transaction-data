@@ -67,6 +67,7 @@ export type OrganizedYears = {
 }
 
 export type ContextType = {
+  originalData: CSVData[];
   organizedData: OrganizedYears;
   dataToView: CSVData[];
 }
