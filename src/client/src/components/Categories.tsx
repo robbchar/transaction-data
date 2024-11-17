@@ -1,5 +1,5 @@
 import { forwardRef, useState } from 'react';
-import { styled } from 'styled-components';
+import styled from '@emotion/styled';
 
 import withClickOutside from '../hooks/withClickOutside';
 import { Category } from '../types/DataType';

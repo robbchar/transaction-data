@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import Papa from 'papaparse';
-import { styled } from 'styled-components';
+import styled from '@emotion/styled';
 
 import DataContext from '../DataContext.tsx';
 import { ContextType, CSVData, getTransactionById } from '../types/DataType.ts';
@@ -83,7 +83,7 @@ export default function EditTransactions() {
                   <Categories
                     chosenCategoryLabel={transaction.Category}
                     open={false}
-                    setOpen={() => {}}
+                    setOpen={() => { }}
                     categoryChosen={(newCategoryLabel: string) => {
                       transaction.Category = newCategoryLabel;
                       saveTransactions(context.originalData);

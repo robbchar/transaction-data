@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { styled } from 'styled-components';
+import styled from '@emotion/styled';
 
 // inspired by MUI aslider: https://mui.com/material-ui/react-slider/
 const ContainerSpan = styled.span`
