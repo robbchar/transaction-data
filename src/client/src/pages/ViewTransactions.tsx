@@ -1,24 +1,25 @@
-import { ChangeEvent, useContext, useEffect, useState } from "react";
-import { Chart, ReactGoogleChartProps } from "react-google-charts";
-import DataContext from "../DataContext";
-import { CSVData, TransactionCategories } from "../types/DataType";
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { Chart, ReactGoogleChartProps } from 'react-google-charts';
+import DataContext from '../DataContext';
+import { CSVData, TransactionCategories } from '../types/DataType';
+import DateSlider from '../components/DateSlider';
 
 enum ChartTypes {
-  Pie = "PieChart",
+  Pie = 'PieChart',
 }
 
 function getPropsForChartType(
   chartType: string,
-  dataToView: CSVData[]
+  dataToView: CSVData[],
 ): ReactGoogleChartProps {
   const chartOptions: ReactGoogleChartProps = {
-    chartType: "PieChart",
+    chartType: 'PieChart',
   };
   switch (chartType) {
     case ChartTypes.Pie:
-      chartOptions.chartType = "PieChart";
+      chartOptions.chartType = 'PieChart';
       const data: TransactionCategories = {};
-      dataToView.forEach((csvData) => {
+      dataToView.forEach(csvData => {
         const key = csvData.Category;
         const amounnt =
           csvData.Amount >= 0 ? csvData.Amount : csvData.Amount * -1;
@@ -31,17 +32,17 @@ function getPropsForChartType(
           data[key as keyof TransactionCategories] = amounnt;
         }
       });
-      chartOptions.data = [["Category", "Amount"], ...Object.entries(data)];
-      chartOptions.width = "100%";
-      chartOptions.height = "400px";
+      chartOptions.data = [['Category', 'Amount'], ...Object.entries(data)];
+      chartOptions.width = '100%';
+      chartOptions.height = '400px';
       chartOptions.legendToggle;
       const formatters = [
         {
-          type: "NumberFormat" as const,
+          type: 'NumberFormat' as const,
           column: 1,
           options: {
-            prefix: "$",
-            negativeColor: "red",
+            prefix: '$',
+            negativeColor: 'red',
             negativeParens: true,
           },
         },
@@ -57,15 +58,17 @@ function getPropsForChartType(
 export default function ViewTransactions() {
   const context = useContext(DataContext);
   const [chartOptions, setChartOptions] = useState<ReactGoogleChartProps>({
-    chartType: "PieChart",
+    chartType: 'PieChart',
   });
 
   useEffect(() => {
-    setChartOptions(getPropsForChartType("PieChart", context.dataToView));
+    setChartOptions(getPropsForChartType('PieChart', context.dataToView));
   }, []);
 
   function chartSelected(event: ChangeEvent<HTMLSelectElement>): void {
-    setChartOptions(getPropsForChartType(event.target.value, context.dataToView));
+    setChartOptions(
+      getPropsForChartType(event.target.value, context.dataToView),
+    );
   }
 
   return (
@@ -76,7 +79,14 @@ export default function ViewTransactions() {
           <option value={ChartTypes.Pie.toString()}>{ChartTypes.Pie}</option>
         </select>
       </div>
-      <div><span>Current Dates: </span></div>
+      <div>
+        <span>Current Dates: </span>
+        <DateSlider
+          startDate={new Date('1/1/2024')}
+          endDate={new Date('12/31/2024')}
+          dateChanged={() => console.log('DateC hanged')}
+        ></DateSlider>
+      </div>
       <Chart {...chartOptions} />
     </>
   );

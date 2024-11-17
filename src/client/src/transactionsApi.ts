@@ -1,13 +1,13 @@
-import Papa from "papaparse";
+import Papa from 'papaparse';
 
-import { CSVData, OrganizedYears } from "./types/DataType";
+import { CSVData, OrganizedYears } from './types/DataType';
 
 export const organizeTheData = (data: CSVData[]): OrganizedYears => {
   const organizedData: OrganizedYears = {};
 
   data.forEach((transaction: CSVData) => {
-    const year = transaction["Posted Date"].getFullYear();
-    const month = transaction["Posted Date"].getMonth();
+    const year = transaction['Posted Date'].getFullYear();
+    const month = transaction['Posted Date'].getMonth();
 
     if (organizedData[year] === undefined) {
       organizedData[year] = {};
@@ -38,18 +38,23 @@ export const getDataToView = (organizedData: OrganizedYears): CSVData[] => {
 
 export const getSavedTransactions = async (): Promise<CSVData[]> => {
   const data = await fetch(`/api/get-saved-transactions`)
-    .then((response) => response.text())
-    .then((responseText) => {
+    .then(response => response.text())
+    .then(responseText => {
       // -- parse csv
       return Papa.parse<CSVData>(responseText, {
         header: true,
         dynamicTyping: true,
-        skipEmptyLines: true
+        skipEmptyLines: true,
       }).data;
     });
 
   // this isn't supposed to have to happen I can't find how to get papaparse to parse Dates though
-  data.forEach((transaction) => transaction["Posted Date"] = transaction["Posted Date"] ? new Date(transaction["Posted Date"]) : transaction["Posted Date"]);
+  data.forEach(
+    transaction =>
+      (transaction['Posted Date'] = transaction['Posted Date']
+        ? new Date(transaction['Posted Date'])
+        : transaction['Posted Date']),
+  );
 
   return data;
 };
@@ -57,10 +62,10 @@ export const getSavedTransactions = async (): Promise<CSVData[]> => {
 export const saveTransactions = (transactions: CSVData[]) => {
   let csvString = Papa.unparse(transactions);
   fetch(`/api/save-transactions`, {
-    method: "PUT",
+    method: 'PUT',
     body: `{ "contents": "${encodeURIComponent(csvString)}" }`,
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
 };

@@ -1,5 +1,5 @@
-import { Link, Outlet } from "react-router-dom";
-import styled from "styled-components";
+import { Link, Outlet } from 'react-router-dom';
+import styled from 'styled-components';
 
 const RootDiv = styled.div`
   display: grid;

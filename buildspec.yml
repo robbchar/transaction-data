@@ -17,5 +17,5 @@ phases:
     commands:
 artifacts:
   files:
-    - "**/*"
-  base-directory: "src/client/dist/"
+    - '**/*'
+  base-directory: 'src/client/dist/'

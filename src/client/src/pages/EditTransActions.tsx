@@ -1,23 +1,23 @@
-import { useContext, useState } from "react";
-import Papa from "papaparse";
-import { styled } from "styled-components";
+import { useContext, useState } from 'react';
+import Papa from 'papaparse';
+import { styled } from 'styled-components';
 
-import DataContext from "../DataContext.tsx";
-import { ContextType, CSVData, getTransactionById } from "../types/DataType.ts";
-import { saveTransactions } from "../transactionsApi.ts";
-import Categories from "../components/Categories.tsx";
+import DataContext from '../DataContext.tsx';
+import { ContextType, CSVData, getTransactionById } from '../types/DataType.ts';
+import { saveTransactions } from '../transactionsApi.ts';
+import Categories from '../components/Categories.tsx';
 
 const TransactionLI = styled.li`
   list-style: none;
   display: flex;
   justify-content: space-between;
-  padding-bottom: .1rem;
+  padding-bottom: 0.1rem;
 `;
 
 const formatPrice = (price: number): string => {
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
   });
 
   return formatter.format(price);
@@ -29,8 +29,8 @@ export default function EditTransactions() {
 
   const loadNewTransactions = async () => {
     const newData = await fetch(`/api/get-original-transactions`)
-      .then((response) => response.text())
-      .then((responseText) => {
+      .then(response => response.text())
+      .then(responseText => {
         // -- parse csv
         return Papa.parse<CSVData>(responseText, {
           header: true,
@@ -39,15 +39,15 @@ export default function EditTransactions() {
         });
       });
 
-    newData.data.forEach((newTransaction) => {
+    newData.data.forEach(newTransaction => {
       if (
-        (newTransaction["Reference Number"] as string) &&
-        (newTransaction["Reference Number"] as string).trim() === ""
+        (newTransaction['Reference Number'] as string) &&
+        (newTransaction['Reference Number'] as string).trim() === ''
       )
         return;
       const oldTransaction = getTransactionById(
-        newTransaction["Reference Number"] as number,
-        context.originalData
+        newTransaction['Reference Number'] as number,
+        context.originalData,
       );
       if (oldTransaction === null) {
         context.originalData.push(newTransaction);
@@ -56,7 +56,7 @@ export default function EditTransactions() {
 
       oldTransaction.Amount = newTransaction.Amount;
       oldTransaction.Payee = newTransaction.Payee;
-      oldTransaction["Posted Date"] = newTransaction["Posted Date"];
+      oldTransaction['Posted Date'] = newTransaction['Posted Date'];
     });
 
     setData(context);
@@ -73,14 +73,17 @@ export default function EditTransactions() {
           <ul>
             {context.dataToView.map((transaction, index) => (
               <TransactionLI key={index}>
-                <div>Posted Date: {`${transaction["Posted Date"].getDay()}\\${transaction["Posted Date"].getMonth()}\\${transaction["Posted Date"].getFullYear()}`}</div>
+                <div>
+                  Posted Date:{' '}
+                  {`${transaction['Posted Date'].getDay()}\\${transaction['Posted Date'].getMonth()}\\${transaction['Posted Date'].getFullYear()}`}
+                </div>
                 <div>Payee: {transaction.Payee}</div>
                 <div>Amount: {formatPrice(transaction.Amount)}</div>
                 <div>
                   <Categories
                     chosenCategoryLabel={transaction.Category}
                     open={false}
-                    setOpen={() => { }}
+                    setOpen={() => {}}
                     categoryChosen={(newCategoryLabel: string) => {
                       transaction.Category = newCategoryLabel;
                       saveTransactions(context.originalData);

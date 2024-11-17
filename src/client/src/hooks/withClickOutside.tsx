@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, MutableRefObject } from "react";
+import React, { useState, useRef, useEffect, MutableRefObject } from 'react';
 
 interface WrappedComponentProps {
   open: Boolean;
@@ -7,7 +7,7 @@ interface WrappedComponentProps {
 }
 
 export default function withClickOutside<P extends {}>(
-  WrappedComponent: React.FC<P & WrappedComponentProps>
+  WrappedComponent: React.FC<P & WrappedComponentProps>,
 ) {
   const Component = (props: P) => {
     const [open, setOpen] = useState(false);
@@ -20,7 +20,7 @@ export default function withClickOutside<P extends {}>(
           setOpen(false);
         }
       };
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }, [ref]);
 
     return (

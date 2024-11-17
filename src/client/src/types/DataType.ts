@@ -1,6 +1,6 @@
 export interface CSVData {
-  "Posted Date": Date;
-  "Reference Number": number | string;
+  'Posted Date': Date;
+  'Reference Number': number | string;
   Payee: string;
   Address: string;
   Amount: number;
@@ -9,11 +9,11 @@ export interface CSVData {
 
 export function getTransactionById(
   id: number,
-  data: CSVData[]
+  data: CSVData[],
 ): CSVData | null {
   let oldTransaction = null;
-  data.forEach((transaction) => {
-    if (transaction["Reference Number"] === id) {
+  data.forEach(transaction => {
+    if (transaction['Reference Number'] === id) {
       oldTransaction = transaction;
     }
   });
@@ -21,37 +21,37 @@ export function getTransactionById(
 }
 
 export enum Category {
-  Mortgage = "Mortgage",
-  Internet = "Internet",
-  CarPayment = "Car payment",
-  CarCharging = "Car Charging",
-  Groceries = "Groceries",
-  EatingOut = "Eating out",
-  EatingIn = "Eating In",
-  AlcoholBars = "Alcohol/Bars",
-  Pet_Food = "Pet - Food",
-  Pet_Boarding = "Pet - Boarding",
-  Pet_Grooming = "Pet - Grooming",
-  Pet_Misc = "Pet - Misc",
-  Pet_Vet = "Pet - Vet",
-  Electricity = "Electricity",
-  Phone = "Phone",
-  Medical = "Medical",
-  Medicine = "Medicine",
-  Insurance = "Insurance",
-  Clothes = "Clothes",
-  Miscelaneous = "Miscelaneous",
-  Salon = "Salon",
-  LoansFinance = "Loans/Finance",
-  Gifts = "Gifts",
-  Games = "Games",
-  Movies = "Movies",
-  Concerts = "Concerts",
-  Subscriptions = "Subscriptions",
-  Entertainment = "Entertainment",
-  TaxiLyft = "Taxi/Lyft",
-  Hotel = "Hotel",
-  "Mystery Transaction" = "Mystery Transaction",
+  Mortgage = 'Mortgage',
+  Internet = 'Internet',
+  CarPayment = 'Car payment',
+  CarCharging = 'Car Charging',
+  Groceries = 'Groceries',
+  EatingOut = 'Eating out',
+  EatingIn = 'Eating In',
+  AlcoholBars = 'Alcohol/Bars',
+  Pet_Food = 'Pet - Food',
+  Pet_Boarding = 'Pet - Boarding',
+  Pet_Grooming = 'Pet - Grooming',
+  Pet_Misc = 'Pet - Misc',
+  Pet_Vet = 'Pet - Vet',
+  Electricity = 'Electricity',
+  Phone = 'Phone',
+  Medical = 'Medical',
+  Medicine = 'Medicine',
+  Insurance = 'Insurance',
+  Clothes = 'Clothes',
+  Miscelaneous = 'Miscelaneous',
+  Salon = 'Salon',
+  LoansFinance = 'Loans/Finance',
+  Gifts = 'Gifts',
+  Games = 'Games',
+  Movies = 'Movies',
+  Concerts = 'Concerts',
+  Subscriptions = 'Subscriptions',
+  Entertainment = 'Entertainment',
+  TaxiLyft = 'Taxi/Lyft',
+  Hotel = 'Hotel',
+  'Mystery Transaction' = 'Mystery Transaction',
 }
 
 export type TransactionCategories = {
@@ -60,14 +60,14 @@ export type TransactionCategories = {
 
 export type OrganizedMonths = {
   [id: number]: CSVData[];
-}
+};
 
 export type OrganizedYears = {
   [id: number]: OrganizedMonths;
-}
+};
 
 export type ContextType = {
   originalData: CSVData[];
   organizedData: OrganizedYears;
   dataToView: CSVData[];
-}
+};

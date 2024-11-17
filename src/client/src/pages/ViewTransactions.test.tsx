@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 
-import EditTransactions from './EditTransActions';
+import ViewTransactions from './ViewTransactions';
 import DataContext from '../DataContext.tsx';
 
-it('Renders the EditTransactions page', () => {
+it('Renders the ViewTransactions page', () => {
   render(
     <DataContext.Provider
       value={{
@@ -44,7 +44,7 @@ it('Renders the EditTransactions page', () => {
         ],
       }}
     >
-      <EditTransactions />
+      <ViewTransactions />
     </DataContext.Provider>,
   );
 

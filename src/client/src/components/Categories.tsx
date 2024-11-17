@@ -1,7 +1,8 @@
-import { forwardRef, useState } from "react";
-import { styled } from "styled-components";
+import { forwardRef, useState } from 'react';
+import { styled } from 'styled-components';
 
-import withClickOutside from "../hooks/withClickOutside";
+import withClickOutside from '../hooks/withClickOutside';
+import { Category } from '../types/DataType';
 
 const DropdownDiv = styled.div`
   position: relative;
@@ -41,40 +42,6 @@ const MenuUl = styled.ul`
   }
 `;
 
-const items: Array<string> = [
-  "Mortgage",
-  "Car payment",
-  "Car Charging",
-  "Groceries",
-  "Eating out",
-  "Eating In",
-  "Alcohol/Bars",
-  "Pet - Food",
-  "Pet - Boarding",
-  "Pet - Grooming",
-  "Pet - Misc",
-  "Pet - Vet",
-  "Electricity",
-  "Phone",
-  "Internet",
-  "Medical",
-  "Medicine",
-  "Insurance",
-  "Clothes",
-  "Miscelaneous",
-  "Salon",
-  "Loans/Finance",
-  "Gifts",
-  "Games",
-  "Movies",
-  "Concerts",
-  "Subscriptions",
-  "Entertainment",
-  "Taxi/Lyft",
-  "Hotel",
-  "Mystery Transaction",
-];
-
 interface CategoriesProps {
   open: Boolean;
   setOpen: Function;
@@ -82,37 +49,33 @@ interface CategoriesProps {
   categoryChosen: Function;
 }
 
-const Categories: React.FC<CategoriesProps> = forwardRef(({
-  open,
-  setOpen,
-  chosenCategoryLabel,
-  categoryChosen,
-}, ref) => {
-  const [selectedText, setSelectedText] = useState<string>(
-    chosenCategoryLabel ?? " -- Select -- "
-  );
+const Categories: React.FC<CategoriesProps> = forwardRef(
+  ({ open, setOpen, chosenCategoryLabel, categoryChosen }, ref) => {
+    const [selectedText, setSelectedText] = useState<string>(
+      chosenCategoryLabel ?? ' -- Select -- ',
+    );
 
-  const categoryClicked = (categoryName: string) => {
-    setSelectedText(categoryName);
-    categoryChosen(categoryName);
-    setOpen(false);
-  };
+    const categoryClicked = (categoryName: string) => {
+      setSelectedText(categoryName);
+      categoryChosen(categoryName);
+      setOpen(false);
+    };
 
-  return (
-    <DropdownDiv ref={ref}>
-      <button onClick={() => setOpen(!open)}>{selectedText}</button>
-      {open ? (
-        <MenuUl>
-          {items.map((value, index) => (
-            <li key={index} onClick={() => categoryClicked(value)}>
-              {value}
-            </li>
-          ))}
-        </MenuUl>
-      ) : null}
-    </DropdownDiv>
-  );
-}
+    return (
+      <DropdownDiv ref={ref}>
+        <button onClick={() => setOpen(!open)}>{selectedText}</button>
+        {open ? (
+          <MenuUl>
+            {Object.keys(Category).map((value, index) => (
+              <li key={index} onClick={() => categoryClicked(value)}>
+                {value}
+              </li>
+            ))}
+          </MenuUl>
+        ) : null}
+      </DropdownDiv>
+    );
+  },
 );
 
 export default withClickOutside(Categories);
