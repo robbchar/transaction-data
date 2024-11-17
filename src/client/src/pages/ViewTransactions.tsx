@@ -2,7 +2,7 @@ import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { Chart, ReactGoogleChartProps } from 'react-google-charts';
 import DataContext from '../DataContext';
 import { CSVData, TransactionCategories } from '../types/DataType';
-import DateSlider from '../components/DateSlider';
+import Slider from '../components/Slider';
 
 enum ChartTypes {
   Pie = 'PieChart',
@@ -81,11 +81,7 @@ export default function ViewTransactions() {
       </div>
       <div>
         <span>Current Dates: </span>
-        <DateSlider
-          startDate={new Date('1/1/2024')}
-          endDate={new Date('12/31/2024')}
-          dateChanged={() => console.log('DateC hanged')}
-        ></DateSlider>
+        <Slider />
       </div>
       <Chart {...chartOptions} />
     </>
