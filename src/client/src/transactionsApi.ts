@@ -1,35 +1,35 @@
 import Papa from 'papaparse';
 
-import { CSVData, OrganizedYears } from './types/DataType';
+import { CSVData } from './types/DataType';
+import { get } from 'http';
 
-export const organizeTheData = (data: CSVData[]): OrganizedYears => {
-  const organizedData: OrganizedYears = {};
+export const organizeTheData = (data: CSVData[]): Map<number, Map<number, CSVData[]>> => {
+  const organizedData: Map<number, Map<number, CSVData[]>> = new Map();
 
   data.forEach((transaction: CSVData) => {
     const year = transaction['Posted Date'].getFullYear();
     const month = transaction['Posted Date'].getMonth();
 
-    if (organizedData[year] === undefined) {
-      organizedData[year] = {};
+    if (organizedData.has(year) === false) {
+      organizedData.set(year, new Map());
     }
 
-    if (organizedData[year][month] === undefined) {
-      organizedData[year][month] = [];
+    const yearMap = organizedData.get(year);
+    if (yearMap?.has(month) === false) {
+      yearMap.set(month, []);
     }
-
-    organizedData[year][month].push(transaction);
+    yearMap?.get(month)?.push(transaction);
   });
 
   return organizedData;
 };
 
-export const getDataToView = (organizedData: OrganizedYears): CSVData[] => {
+export const getDataToView = (organizedData: Map<number, Map<number, CSVData[]>>): CSVData[] => {
   const dataToView: CSVData[] = [];
 
-  Object.keys(organizedData).forEach((yearKey: string) => {
-    const year = organizedData[parseInt(yearKey)];
-    Object.keys(year).forEach((monthKey: string) => {
-      dataToView.push(...year[parseInt(monthKey)]);
+  organizedData.forEach((monthMap: Map<number, CSVData[]>, year: number, yearMap: Map<number, Map<number, CSVData[]>>) => {
+    monthMap.forEach((transactions: CSVData[], monthh: number, map: Map<number, CSVData[]>) => {
+      dataToView.push(...transactions);
     });
   });
 
@@ -51,9 +51,9 @@ export const getSavedTransactions = async (): Promise<CSVData[]> => {
   // this isn't supposed to have to happen I can't find how to get papaparse to parse Dates though
   data.forEach(
     transaction =>
-      (transaction['Posted Date'] = transaction['Posted Date']
-        ? new Date(transaction['Posted Date'])
-        : transaction['Posted Date']),
+    (transaction['Posted Date'] = transaction['Posted Date']
+      ? new Date(transaction['Posted Date'])
+      : transaction['Posted Date']),
   );
 
   return data;

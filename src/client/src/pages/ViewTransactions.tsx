@@ -2,7 +2,7 @@ import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { Chart, ReactGoogleChartProps } from 'react-google-charts';
 import DataContext from '../DataContext';
 import { CSVData, TransactionCategories } from '../types/DataType';
-import Slider from '../components/Slider';
+import DateButtons from '../components/DateButtons';
 
 enum ChartTypes {
   Pie = 'PieChart',
@@ -81,7 +81,7 @@ export default function ViewTransactions() {
       </div>
       <div>
         <span>Current Dates: </span>
-        <Slider />
+        <DateButtons organizedData={context.organizedData} />
       </div>
       <Chart {...chartOptions} />
     </>
