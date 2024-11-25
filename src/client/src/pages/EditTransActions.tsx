@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import Papa from 'papaparse';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 import DataContext from '../DataContext.tsx';
 import { ContextType, CSVData, getTransactionById } from '../types/DataType.ts';

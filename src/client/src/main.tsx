@@ -10,18 +10,19 @@ import ViewTransactions from './pages/ViewTransactions.tsx';
 import EditTransactions from './pages/EditTransActions.tsx';
 import {
   getDataToView,
-  getSavedTransactions,
   organizeTheData,
-} from './transactionsApi.ts';
+} from './functions.ts';
 import { ContextType } from './types/DataType.ts';
+import { getSavedTransactions } from './transactionsApi.ts';
 
 const contextData: ContextType = {
-  organizedData: {},
+  organizedData: new Map(),
   dataToView: [],
   originalData: await getSavedTransactions(),
+  monthYearDisabled: {}
 };
 contextData.organizedData = organizeTheData(contextData.originalData);
-contextData.dataToView = getDataToView(contextData.organizedData);
+contextData.dataToView = getDataToView(contextData);
 
 const router = createBrowserRouter([
   {

@@ -3,6 +3,7 @@ import { Chart, ReactGoogleChartProps } from 'react-google-charts';
 import DataContext from '../DataContext';
 import { CSVData, TransactionCategories } from '../types/DataType';
 import DateButtons from '../components/DateButtons';
+import { getDataToView, updateMonthYearDisabled } from '../functions';
 
 enum ChartTypes {
   Pie = 'PieChart',
@@ -60,16 +61,24 @@ export default function ViewTransactions() {
   const [chartOptions, setChartOptions] = useState<ReactGoogleChartProps>({
     chartType: 'PieChart',
   });
+  const [dataToView, setDataToView] = useState<CSVData[]>([]);
+
 
   useEffect(() => {
     setChartOptions(getPropsForChartType('PieChart', context.dataToView));
-  }, []);
+  }, [context.dataToView]);
 
   function chartSelected(event: ChangeEvent<HTMLSelectElement>): void {
     setChartOptions(
-      getPropsForChartType(event.target.value, context.dataToView),
+      getPropsForChartType(event.target.value, dataToView),
     );
   }
+
+  const onDateChanged = (isDisabled: boolean, month: number, year: number) => {
+    updateMonthYearDisabled(isDisabled, month, year, context);
+    context.dataToView = getDataToView(context);
+    setDataToView(context.dataToView);
+  };
 
   return (
     <>
@@ -81,7 +90,7 @@ export default function ViewTransactions() {
       </div>
       <div>
         <span>Current Dates: </span>
-        <DateButtons organizedData={context.organizedData} />
+        <DateButtons organizedData={context.organizedData} onDateChanged={onDateChanged} />
       </div>
       <Chart {...chartOptions} />
     </>

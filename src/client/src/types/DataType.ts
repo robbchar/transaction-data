@@ -58,19 +58,9 @@ export type TransactionCategories = {
   [key in Category]?: number;
 };
 
-// export type OrganizedMonths = {
-//   [month: number]: CSVData[];
-// };
-
-// interface IOrganizedYears {
-//   [year: number]: OrganizedMonths;
-// };
-// export type OrganizedYears  = {
-//   [K: number in keyof IOrganizedYears]: IOrganizedYears[K]
-// };
-
 export type ContextType = {
   originalData: CSVData[];
   organizedData: Map<number, Map<number, CSVData[]>>//OrganizedYears;
   dataToView: CSVData[];
+  monthYearDisabled: { [key: string]: boolean }
 };
