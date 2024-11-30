@@ -44,5 +44,11 @@ export function getOriginalTransactions(directoryPath: string, fileType: string)
 }
 
 export function getContentsOfFile(filePath: string) {
-  return fs.readFileSync(filePath, 'utf-8');
+  try {
+    const contents = fs.readFileSync(filePath, 'utf-8');
+    return contents;
+  } catch (err) {
+    // Handle the error
+    throw err;
+  }
 }
