@@ -14,18 +14,33 @@ export const errorHandler = (
   });
 };
 
-export function getContentsOfFiles(directoryPath: string, fileType: string) {
-  const filenames = fs.readdirSync(directoryPath);
+// could be optimized for perf
+export function getOriginalTransactions(directoryPath: string, fileType: string): object[] {
+  const transactions: object[] = [];
+  const directories = fs.readdirSync(directoryPath, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name)
 
-  const matchingFiles = filenames.filter(
-    file => path.extname(file) === fileType,
-  );
+  directories.forEach(directoryName => {
+    const filenames = fs.readdirSync(path.join(directoryPath, directoryName))
+      .filter(file => path.extname(file) === fileType);
 
-  return matchingFiles.reduce((result, file) => {
-    const filePath = path.join(directoryPath, file);
-    const fileContent = getContentsOfFile(filePath);
-    return result + fileContent + '\n';
-  }, '');
+    filenames.forEach(filename => {
+      const filePath = path.join(directoryPath, directoryName, filename);
+      const fileContents = getContentsOfFile(filePath);
+      const linesOfFile = fileContents.split('\n');
+
+      transactions.push(linesOfFile.map(line => {
+        const [column1, column2, column3, column4, column5] = line.trim().split(',');
+        //BOA: Posted Date,Reference Number,Payee,Address,Amount
+        //fibre: 10/01,Withdrawal ACH Ameriprise Finc,-57.53,7686.81
+        return directoryName === 'BOA' ? { date: column1, description: column3.replace(/\"/g, "").trim(), amount: column5, account: directoryName }
+          : { date: column1, description: column2, amount: column3, balance: column4, account: directoryName };
+      }));
+    });
+  });
+
+  return transactions;
 }
 
 export function getContentsOfFile(filePath: string) {

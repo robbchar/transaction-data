@@ -2,7 +2,7 @@ import fs from 'fs';
 import express, { Request } from 'express';
 import path from 'path';
 
-import { getContentsOfFile, getContentsOfFiles } from './functions.ts';
+import { getContentsOfFile, getOriginalTransactions } from './functions.ts';
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.get('/get-original-transactions', (req, res) => {
   );
   const fileType = '.csv';
 
-  res.send(getContentsOfFiles(directoryPath, fileType));
+  res.send(getOriginalTransactions(directoryPath, fileType));
 });
 
 router.get('/get-saved-transactions', (req, res) => {
