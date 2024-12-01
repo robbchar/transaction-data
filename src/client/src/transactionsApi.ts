@@ -1,34 +1,26 @@
-import Papa from 'papaparse';
+// import Papa from 'papaparse';
 
-import { CSVData } from './types/DataType';
+import { transaction } from './types/DataType';
 
-export const getSavedTransactions = async (): Promise<CSVData[]> => {
-  const data = await fetch(`/api/get-saved-transactions`)
+export const getSavedTransactions = async (): Promise<transaction[]> => {
+  const transactions: transaction[] = await fetch(`/api/get-saved-transactions`)
     .then(response => response.text())
-    .then(responseText => {
-      return Papa.parse<CSVData>(responseText, {
-        header: true,
-        dynamicTyping: true,
-        skipEmptyLines: true,
-      }).data;
-    });
+    .then(responseText => responseText === '' ? [] : JSON.parse(responseText));
 
-  // this isn't supposed to have to happen I can't find how to get papaparse to parse Dates though
-  data.forEach(
+  transactions.forEach(
     transaction =>
-    (transaction['Posted Date'] = transaction['Posted Date']
-      ? new Date(transaction['Posted Date'])
-      : transaction['Posted Date']),
+    (transaction.date = transaction.date
+      ? new Date(transaction.date)
+      : transaction.date),
   );
 
-  return data;
+  return transactions;
 };
 
-export const saveTransactions = (transactions: CSVData[]) => {
-  let csvString = Papa.unparse(transactions);
+export const saveTransactions = (transactions: transaction[]) => {
   fetch(`/api/save-transactions`, {
     method: 'PUT',
-    body: `{ "contents": "${encodeURIComponent(csvString)}" }`,
+    body: JSON.stringify(transactions),
     headers: {
       'Content-Type': 'application/json',
     },

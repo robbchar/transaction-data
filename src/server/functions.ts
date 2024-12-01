@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { NextFunction, Request, Response } from 'express';
+import crypto from 'crypto';
 
 export const errorHandler = (
   err: Error,
@@ -16,6 +17,7 @@ export const errorHandler = (
 
 // could be optimized for perf
 export function getOriginalTransactions(directoryPath: string, fileType: string): object[] {
+
   const transactions: object[] = [];
   const directories = fs.readdirSync(directoryPath, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
@@ -30,13 +32,20 @@ export function getOriginalTransactions(directoryPath: string, fileType: string)
       const fileContents = getContentsOfFile(filePath);
       const linesOfFile = fileContents.split('\n');
 
-      transactions.push(linesOfFile.map(line => {
+      transactions.push(...linesOfFile.map(line => {
         const [column1, column2, column3, column4, column5] = line.trim().split(',');
         //BOA: Posted Date,Reference Number,Payee,Address,Amount
         //fibre: 10/01,Withdrawal ACH Ameriprise Finc,-57.53,7686.81
-        return directoryName === 'BOA' ? { date: column1, description: column3.replace(/\"/g, "").trim(), amount: column5, account: directoryName }
-          : { date: column1, description: column2, amount: column3, balance: column4, account: directoryName };
-      }));
+        let id = column2;
+        if (directoryName === 'fibre') {
+          const hash = crypto.createHash('sha256');
+          hash.update(line);
+          id = hash.digest('hex');
+        }
+
+        return directoryName === 'BOA' ? { date: column1, description: column3.replace(/\"/g, "").trim(), amount: column5, account: directoryName, id: id }
+          : { date: column1, description: column2, amount: column3, account: directoryName, id: id };
+      }).filter(transaction => transaction.id.trim() !== ''))
     });
   });
 

@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import ViteExpress from 'vite-express';
 
 import apiEndpoints from './apiEndpoints.ts';
@@ -27,7 +26,7 @@ for (const name of Object.keys(nets)) {
 }
 
 const app = express();
-app.use(bodyParser.json());
+app.use(express.json());
 app.use('/api', apiEndpoints); // Mounts the router at '/users'
 
 // Error handling

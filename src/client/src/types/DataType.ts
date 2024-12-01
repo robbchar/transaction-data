@@ -1,19 +1,19 @@
-export interface CSVData {
-  'Posted Date': Date;
-  'Reference Number': number | string;
-  Payee: string;
-  Address: string;
-  Amount: number;
-  Category: string;
+export interface transaction {
+  date: Date;
+  description: string;
+  amount: number;
+  category?: string;
+  account?: string;
+  id: string;
 }
 
 export function getTransactionById(
-  id: number,
-  data: CSVData[],
-): CSVData | null {
+  id: string,
+  data: transaction[],
+): transaction | null {
   let oldTransaction = null;
   data.forEach(transaction => {
-    if (transaction['Reference Number'] === id) {
+    if (transaction.id === id) {
       oldTransaction = transaction;
     }
   });
@@ -59,8 +59,8 @@ export type TransactionCategories = {
 };
 
 export type ContextType = {
-  originalData: CSVData[];
-  organizedData: Map<number, Map<number, CSVData[]>>//OrganizedYears;
-  dataToView: CSVData[];
+  originalData: transaction[];
+  organizedData: Map<number, Map<number, transaction[]>>//OrganizedYears;
+  dataToView: transaction[];
   monthYearDisabled: { [key: string]: boolean }
 };

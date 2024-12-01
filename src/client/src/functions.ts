@@ -1,11 +1,11 @@
-import { ContextType, CSVData } from "./types/DataType";
+import { ContextType, transaction } from "./types/DataType";
 
-export const organizeTheData = (data: CSVData[]): Map<number, Map<number, CSVData[]>> => {
-  const organizedData: Map<number, Map<number, CSVData[]>> = new Map();
+export const organizeTheData = (transactions: transaction[]): Map<number, Map<number, transaction[]>> => {
+  const organizedData: Map<number, Map<number, transaction[]>> = new Map();
 
-  data.forEach((transaction: CSVData) => {
-    const year = transaction['Posted Date'].getFullYear();
-    const month = transaction['Posted Date'].getMonth();
+  transactions.forEach((transaction: transaction) => {
+    const year = transaction.date.getFullYear();
+    const month = transaction.date.getMonth();
 
     if (organizedData.has(year) === false) {
       organizedData.set(year, new Map());
@@ -21,11 +21,11 @@ export const organizeTheData = (data: CSVData[]): Map<number, Map<number, CSVDat
   return organizedData;
 };
 
-export const getDataToView = (context: ContextType): CSVData[] => {
-  const dataToView: CSVData[] = [];
+export const getDataToView = (context: ContextType): transaction[] => {
+  const dataToView: transaction[] = [];
 
-  context.organizedData.forEach((monthMap: Map<number, CSVData[]>, year: number, yearMap: Map<number, Map<number, CSVData[]>>) => {
-    monthMap.forEach((transactions: CSVData[], month: number, map: Map<number, CSVData[]>) => {
+  context.organizedData.forEach((monthMap: Map<number, transaction[]>, year: number, yearMap: Map<number, Map<number, transaction[]>>) => {
+    monthMap.forEach((transactions: transaction[], month: number, map: Map<number, transaction[]>) => {
       const key = `${month}_${year}`;
       if (!context.monthYearDisabled.hasOwnProperty(key))
         dataToView.push(...transactions);
