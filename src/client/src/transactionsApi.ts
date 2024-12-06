@@ -7,12 +7,13 @@ export const getSavedTransactions = async (): Promise<transaction[]> => {
     .then(response => response.text())
     .then(responseText => responseText === '' ? [] : JSON.parse(responseText));
 
-  transactions.forEach(
-    transaction =>
-    (transaction.date = transaction.date
+  transactions.forEach(transaction => {
+    transaction.date = transaction.date
       ? new Date(transaction.date)
-      : transaction.date),
-  );
+      : transaction.date;
+
+    transaction.amount = parseInt('' + transaction.amount);
+  });
 
   return transactions;
 };

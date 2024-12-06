@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { Chart, ReactGoogleChartProps } from 'react-google-charts';
 import DataContext from '../DataContext';
-import { CSVData, TransactionCategories } from '../types/DataType';
+import { transaction, TransactionCategories } from '../types/DataType';
 import DateButtons from '../components/DateButtons';
 import { getDataToView, updateMonthYearDisabled } from '../functions';
 
@@ -11,7 +11,7 @@ enum ChartTypes {
 
 function getPropsForChartType(
   chartType: string,
-  dataToView: CSVData[],
+  dataToView: transaction[],
 ): ReactGoogleChartProps {
   const chartOptions: ReactGoogleChartProps = {
     chartType: 'PieChart',
@@ -20,10 +20,11 @@ function getPropsForChartType(
     case ChartTypes.Pie:
       chartOptions.chartType = 'PieChart';
       const data: TransactionCategories = {};
-      dataToView.forEach(csvData => {
-        const key = csvData.Category;
+      dataToView.forEach(transaction => {
+        if (!transaction.category) return;
+        const key = transaction.category;
         const amounnt =
-          csvData.Amount >= 0 ? csvData.Amount : csvData.Amount * -1;
+          transaction.amount >= 0 ? transaction.amount : transaction.amount * -1;
 
         if (key in data) {
           data[key as keyof TransactionCategories] =
@@ -61,7 +62,7 @@ export default function ViewTransactions() {
   const [chartOptions, setChartOptions] = useState<ReactGoogleChartProps>({
     chartType: 'PieChart',
   });
-  const [dataToView, setDataToView] = useState<CSVData[]>([]);
+  const [dataToView, setDataToView] = useState<transaction[]>([]);
 
 
   useEffect(() => {

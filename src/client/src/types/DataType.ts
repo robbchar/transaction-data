@@ -21,6 +21,7 @@ export function getTransactionById(
 }
 
 export enum Category {
+  Income = 'Income',
   Mortgage = 'Mortgage',
   Internet = 'Internet',
   CarPayment = 'Car payment',

@@ -21,12 +21,12 @@ const TransactionLI = styled.li`
     margin-right: 1rem;
   }
   > div:nth-child(4) {
-    width:15rem;
     div {
       display: flex;
       position: relative;
       justify-content: space-between;
       button {
+        width:15rem;
         margin: auto;
       }
     }
