@@ -8,6 +8,7 @@ export const getSavedTransactions = async (): Promise<transaction[]> => {
     .then(responseText => responseText === '' ? [] : JSON.parse(responseText));
 
   transactions.forEach(transaction => {
+    console.log(`transaction: ${JSON.stringify(transaction, null, 2)}`)
     transaction.date = transaction.date
       ? new Date(transaction.date)
       : transaction.date;

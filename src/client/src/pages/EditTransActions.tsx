@@ -14,13 +14,13 @@ const TransactionLI = styled.li`
   display: flex;
   justify-content: space-between;
   padding-bottom: 0.1rem;
-  > div:nth-child(2) {
+  > div:nth-child(3) {
     flex: 1;
   }
-  > div:nth-child(3) {
+  > div:nth-child(4) {
     margin-right: 1rem;
   }
-  > div:nth-child(4) {
+  > div:nth-child(5) {
     div {
       display: flex;
       position: relative;
@@ -41,6 +41,20 @@ const formatPrice = (price: number): string => {
 
   return formatter.format(price);
 };
+
+const formatDate = (date: Date): string => {
+  const d = new Date(date),
+    year = d.getFullYear();
+  let month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate();
+
+  if (month.length < 2)
+    month = '0' + month;
+  if (day.length < 2)
+    day = '0' + day;
+
+  return [month, day, year].join('/');
+}
 
 export default function EditTransactions() {
   const context = useContext(DataContext);
@@ -78,14 +92,14 @@ export default function EditTransactions() {
         <span>data did not load</span>
       ) : (
         <div>
-          <h2>Transactions to manage:</h2>
+          <h2>Transactions to manage: ({context.originalData.length})</h2>
           <TransactionUl>
-            {context.dataToView.map((transaction, index) => (
+            {context.originalData.map((transaction, index) => (
               <TransactionLI key={index}>
                 <div>
-                  Posted Date:{' '}
-                  {`${transaction.date.getDay()}\\${transaction.date.getMonth()}\\${transaction.date.getFullYear()}`}
+                  {`${formatDate(transaction.date)}`}
                 </div>
+                <div>Account: {transaction.account}</div>
                 <div>Payee: {transaction.description}</div>
                 <div>Amount: {formatPrice(transaction.amount)}</div>
                 <div>
