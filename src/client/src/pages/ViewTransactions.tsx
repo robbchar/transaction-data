@@ -1,57 +1,29 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { Chart, ReactGoogleChartProps } from 'react-google-charts';
 import DataContext from '../DataContext';
-import { transaction, TransactionCategories } from '../types/DataType';
+import { transaction } from '../types/DataType';
 import DateButtons from '../components/DateButtons';
 import { getDataToView, updateMonthYearDisabled } from '../functions';
+import { getPieChartProps } from '../utilities/chartTypeData';
+
 
 enum ChartTypes {
   Pie = 'PieChart',
+  Line = 'LineChart',
 }
 
 function getPropsForChartType(
   chartType: string,
   dataToView: transaction[],
 ): ReactGoogleChartProps {
-  const chartOptions: ReactGoogleChartProps = {
-    chartType: 'PieChart',
+  // initialize a return variable
+  let chartOptions: ReactGoogleChartProps = {
+    chartType: ChartTypes.Pie,
   };
   switch (chartType) {
     case ChartTypes.Pie:
-      chartOptions.chartType = 'PieChart';
-      const data: TransactionCategories = {};
-      dataToView.forEach(transaction => {
-        if (!transaction.category) return;
-        const key = transaction.category;
-        const amounnt =
-          transaction.amount >= 0 ? transaction.amount : transaction.amount * -1;
-
-        if (key in data) {
-          data[key as keyof TransactionCategories] =
-            (data[key as keyof TransactionCategories] as number) +
-            (amounnt < 0 ? amounnt * -1 : amounnt);
-        } else {
-          data[key as keyof TransactionCategories] = amounnt;
-        }
-      });
-      chartOptions.data = [['Category', 'Amount'], ...Object.entries(data)];
-      chartOptions.width = '100%';
-      chartOptions.height = '400px';
-      chartOptions.legendToggle;
-      const formatters = [
-        {
-          type: 'NumberFormat' as const,
-          column: 1,
-          options: {
-            prefix: '$',
-            negativeColor: 'red',
-            negativeParens: true,
-          },
-        },
-      ];
-      chartOptions.formatters = formatters;
-
-      return chartOptions;
+      chartOptions = getPieChartProps(dataToView);
+      break;
   }
 
   return chartOptions;
