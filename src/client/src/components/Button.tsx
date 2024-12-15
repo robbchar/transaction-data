@@ -65,6 +65,6 @@ const Button: React.FC<ButtonsProps> = ({ onClick, value, label }) => {
     onClick(!isDisabled, value);
   }
 
-  return <StyledButton onClick={handleClick} $isDisabled={isDisabled} value={value}>{label}</StyledButton>;
+  return <StyledButton onClick={handleClick} data-isdisabled={isDisabled} $isDisabled={isDisabled} value={value}>{label}</StyledButton>;
 };
 export default Button;

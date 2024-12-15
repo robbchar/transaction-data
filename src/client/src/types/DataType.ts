@@ -59,9 +59,18 @@ export type TransactionCategories = {
   [key in Category]?: number;
 };
 
+export enum GroupByEnum {
+  Type = 'Type',
+  Category = 'Category'
+}
+
+export type GroupByItems = {
+  [key in GroupByEnum]?: number;
+};
+
 export type ContextType = {
   originalData: transaction[];
   organizedData: Map<number, Map<number, transaction[]>>//OrganizedYears;
   dataToView: transaction[];
-  monthYearDisabled: { [key: string]: boolean }
+  monthYearDisabled: { [key: string]: boolean };
 };
