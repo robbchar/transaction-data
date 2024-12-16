@@ -11,7 +11,7 @@ import EditTransactions from './pages/EditTransActions.tsx';
 import {
   getDataToView,
   organizeTheData,
-} from './functions.ts';
+} from './utilities/functions.ts';
 import { ContextType } from './types/DataType.ts';
 import { getSavedTransactions } from './transactionsApi.ts';
 

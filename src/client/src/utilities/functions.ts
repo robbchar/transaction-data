@@ -1,4 +1,4 @@
-import { ContextType, transaction } from "./types/DataType";
+import { ContextType, transaction } from "../types/DataType";
 
 export const organizeTheData = (transactions: transaction[]): Map<number, Map<number, transaction[]>> => {
   const organizedData: Map<number, Map<number, transaction[]>> = new Map();
@@ -44,3 +44,26 @@ export const updateMonthYearDisabled = (isDisabled: boolean, month: number, year
 
   context.monthYearDisabled[key] = isDisabled;
 };
+
+export const formatPrice = (price: number): string => {
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+
+  return formatter.format(price);
+};
+
+export const formatDate = (date: Date): string => {
+  const d = new Date(date),
+    year = d.getFullYear();
+  let month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate();
+
+  if (month.length < 2)
+    month = '0' + month;
+  if (day.length < 2)
+    day = '0' + day;
+
+  return [month, day, year].join('/');
+}

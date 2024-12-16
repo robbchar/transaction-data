@@ -5,6 +5,7 @@ import DataContext from '../DataContext.tsx';
 import { transaction, getTransactionById } from '../types/DataType.ts';
 import { saveTransactions } from '../transactionsApi.ts';
 import Categories from '../components/Categories.tsx';
+import { formatDate, formatPrice } from '../utilities/functions.ts';
 
 const TransactionUl = styled.ul`
   padding: 0;
@@ -12,7 +13,7 @@ const TransactionUl = styled.ul`
 const TransactionLI = styled.li`
   list-style: none;
   display: flex;
-  justify-content: space-between;
+  gap: 1rem;
   padding-bottom: 0.1rem;
   > div:nth-child(3) {
     flex: 1;
@@ -32,29 +33,6 @@ const TransactionLI = styled.li`
     }
   }
 `;
-
-const formatPrice = (price: number): string => {
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  });
-
-  return formatter.format(price);
-};
-
-const formatDate = (date: Date): string => {
-  const d = new Date(date),
-    year = d.getFullYear();
-  let month = '' + (d.getMonth() + 1),
-    day = '' + d.getDate();
-
-  if (month.length < 2)
-    month = '0' + month;
-  if (day.length < 2)
-    day = '0' + day;
-
-  return [month, day, year].join('/');
-}
 
 export default function EditTransactions() {
   const context = useContext(DataContext);

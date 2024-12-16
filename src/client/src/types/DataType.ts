@@ -55,8 +55,12 @@ export enum Category {
   'Mystery Transaction' = 'Mystery Transaction',
 }
 
-export type TransactionCategories = {
+export type TransactionCategoriesAmounts = {
   [key in Category]?: number;
+};
+
+export type TransactionCategoriesTransactions = {
+  [key in Category]?: Array<transaction>;
 };
 
 export enum GroupByEnum {
@@ -64,8 +68,12 @@ export enum GroupByEnum {
   Category = 'Category'
 }
 
-export type GroupByItems = {
+export type GroupByItemsAmounts = {
   [key in GroupByEnum]?: number;
+};
+
+export type GroupByItemsTransactions = {
+  [key in Category]?: Array<transaction>;
 };
 
 export type ContextType = {

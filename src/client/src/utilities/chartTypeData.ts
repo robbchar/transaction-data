@@ -1,12 +1,12 @@
 import { ReactGoogleChartProps } from "react-google-charts";
-import { GroupByEnum, GroupByItems, transaction, TransactionCategories } from "../types/DataType";
+import { GroupByEnum, GroupByItemsAmounts, transaction, TransactionCategoriesAmounts } from "../types/DataType";
 
 export const getPieChartProps = (dataToView: transaction[], groupBy: GroupByEnum) => {
   const chartOptions: ReactGoogleChartProps = {
     chartType: 'PieChart',
   };
-  const categoryData: TransactionCategories = {};
-  const groupsByData: GroupByItems = {};
+  const categoryData: TransactionCategoriesAmounts = {};
+  const groupsByData: GroupByItemsAmounts = {};
   dataToView.forEach(transaction => {
     if (!transaction.category) return;
     if (groupBy === GroupByEnum.Category) {
@@ -14,22 +14,22 @@ export const getPieChartProps = (dataToView: transaction[], groupBy: GroupByEnum
       const amounnt = transaction.amount >= 0 ? transaction.amount : transaction.amount * -1;
 
       if (key in categoryData) {
-        categoryData[key as keyof TransactionCategories] =
-          (categoryData[key as keyof TransactionCategories] as number) +
+        categoryData[key as keyof TransactionCategoriesAmounts] =
+          (categoryData[key as keyof TransactionCategoriesAmounts] as number) +
           (amounnt < 0 ? amounnt * -1 : amounnt);
       } else {
-        categoryData[key as keyof TransactionCategories] = amounnt;
+        categoryData[key as keyof TransactionCategoriesAmounts] = amounnt;
       }
     } else if (groupBy === GroupByEnum.Type) {
       const key = transaction.description.startsWith('Deposit') ? 'Deposits' : 'Withdrawls';
       const amounnt = transaction.amount >= 0 ? transaction.amount : transaction.amount * -1;
 
       if (key in groupsByData) {
-        groupsByData[key as keyof GroupByItems] =
-          (groupsByData[key as keyof GroupByItems] as number) +
+        groupsByData[key as keyof GroupByItemsAmounts] =
+          (groupsByData[key as keyof GroupByItemsAmounts] as number) +
           (amounnt < 0 ? amounnt * -1 : amounnt);
       } else {
-        groupsByData[key as keyof GroupByItems] = amounnt;
+        groupsByData[key as keyof GroupByItemsAmounts] = amounnt;
       }
     }
   });
