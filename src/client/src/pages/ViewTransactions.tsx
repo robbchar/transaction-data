@@ -50,7 +50,7 @@ const TransactionLI = styled.li`
   padding-bottom: 0.1rem;
   > div {
    margin-right: .5ren;
-   &:nth-child(3) {
+   &:nth-child(2) {
     flex: 1;
    }
    &:last-child{
@@ -146,7 +146,7 @@ export default function ViewTransactions() {
               <div>
                 {`${formatDate(transaction.date)}`}
               </div>
-              <div>Account: {transaction.account}</div>
+              {/* <div>Account: {transaction.account}</div> */}
               <div>Payee: {transaction.description}</div>
               <div>Amount: {formatPrice(transaction.amount)}</div>
             </TransactionLI>
