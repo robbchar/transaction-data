@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import DataContext from '../DataContext';
 import { GroupByEnum, GroupByItemsTransactions, transaction, TransactionCategoriesTransactions } from '../types/DataType';
 import DateButtons from '../components/DateButtons';
-import { formatDate, formatPrice, getDataToView, updateMonthYearDisabled } from '../utilities/functions';
+import { formatDate, formatPrice, getDataToView, returnMonthYearKey } from '../utilities/functions';
 import { getPieChartProps } from '../utilities/chartTypeData';
 
 enum ChartTypes {
@@ -82,10 +82,10 @@ export default function ViewTransactions() {
       getPropsForChartType(event.target.value, context.dataToView, groupedValue),
     );
   }
-
+  //context.monthYearDisabled[key] = isDisabled;
   const onDateChanged = (isDisabled: boolean, month: number, year: number) => {
-    updateMonthYearDisabled(isDisabled, month, year, context);
-    context.dataToView = getDataToView(context);
+    context.monthYearDisabled[returnMonthYearKey(month, year)] = isDisabled;
+    context.dataToView = getDataToView(context.organizedData, context.monthYearDisabled);
 
     setDataToView(context.dataToView);
   };

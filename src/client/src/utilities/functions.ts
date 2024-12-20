@@ -1,4 +1,4 @@
-import { ContextType, transaction } from "../types/DataType";
+import { ContextType, MonthYearDisabledType, transaction } from "../types/DataType";
 
 export const organizeTheData = (transactions: transaction[]): Map<number, Map<number, transaction[]>> => {
   const organizedData: Map<number, Map<number, transaction[]>> = new Map();
@@ -21,16 +21,16 @@ export const organizeTheData = (transactions: transaction[]): Map<number, Map<nu
   return organizedData;
 };
 
-export const getDataToView = (context: ContextType): transaction[] => {
+export const getDataToView = (organizedData: Map<number, Map<number, transaction[]>>, monthYearDisabled: MonthYearDisabledType): transaction[] => {
   const dataToView: transaction[] = [];
 
-  context.organizedData.forEach((monthMap: Map<number, transaction[]>, year: number, yearMap: Map<number, Map<number, transaction[]>>) => {
+  organizedData.forEach((monthMap: Map<number, transaction[]>, year: number, yearMap: Map<number, Map<number, transaction[]>>) => {
     monthMap.forEach((transactions: transaction[], month: number, map: Map<number, transaction[]>) => {
       const key = `${month}_${year}`;
-      if (!context.monthYearDisabled.hasOwnProperty(key))
+      if (!monthYearDisabled.hasOwnProperty(key))
         dataToView.push(...transactions);
 
-      if (context.monthYearDisabled[key] === false) {
+      if (monthYearDisabled[key] === false) {
         dataToView.push(...transactions);
       }
     });
@@ -39,11 +39,7 @@ export const getDataToView = (context: ContextType): transaction[] => {
   return dataToView;
 };
 
-export const updateMonthYearDisabled = (isDisabled: boolean, month: number, year: number, context: ContextType) => {
-  const key = `${month}_${year}`;
-
-  context.monthYearDisabled[key] = isDisabled;
-};
+export const returnMonthYearKey = (month: number, year: number) => `${month}_${year}`;
 
 export const formatPrice = (price: number): string => {
   const formatter = new Intl.NumberFormat('en-US', {

@@ -76,9 +76,13 @@ export type GroupByItemsTransactions = {
   [key in Category]?: Array<transaction>;
 };
 
+export type MonthYearDisabledType = {
+  [key: string]: boolean;
+};
+
 export type ContextType = {
   originalData: transaction[];
   organizedData: Map<number, Map<number, transaction[]>>//OrganizedYears;
   dataToView: transaction[];
-  monthYearDisabled: { [key: string]: boolean };
+  monthYearDisabled: MonthYearDisabledType;
 };

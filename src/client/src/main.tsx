@@ -22,7 +22,7 @@ const contextData: ContextType = {
   monthYearDisabled: {}
 };
 contextData.organizedData = organizeTheData(contextData.originalData);
-contextData.dataToView = getDataToView(contextData);
+contextData.dataToView = getDataToView(contextData.organizedData, contextData.monthYearDisabled);
 
 const router = createBrowserRouter([
   {
