@@ -37,9 +37,12 @@ const TransactionLI = styled.li`
 export default function EditTransactions() {
   const context = useContext(DataContext);
   const [data, setData] = useState<transaction[]>(context.originalData);
+  const [accountType, setAccountType] = useState<string>('');
 
   const loadNewTransactions = async () => {
-    const newData: transaction[] = await fetch(`/api/get-original-transactions`)
+    if (!accountType || accountType === 'select') return
+
+    const newData: transaction[] = await fetch(`/api/get-original-transactions/${accountType}`)
       .then(response => response.text())
       .then(responseText => JSON.parse(responseText));
 
@@ -95,6 +98,11 @@ export default function EditTransactions() {
             ))}
           </TransactionUl>
           <button onClick={loadNewTransactions}>Load new transactions.</button>
+          <select name="accountType" id="accountType" onChange={(e) => setAccountType(e.target.value)}>
+            <option value="select">Select an Account</option>
+            <option value="fibre">fibre</option>
+            <option value="BOA">BOA</option>
+          </select>
         </div>
       )}
     </>

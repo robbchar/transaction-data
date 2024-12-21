@@ -6,20 +6,21 @@ import { getContentsOfFile, getOriginalTransactions } from './functions.ts';
 
 const router = express.Router();
 
-router.get('/get-original-transactions', (req, res) => {
+router.get('/get-original-transactions/:accountType', (req, res) => {
+  const accountType = req.params.accountType;
   const directoryPath = path.join(
     import.meta.dirname,
     '/original-transactions-data',
   );
   const fileType = '.csv';
 
-  res.json(getOriginalTransactions(directoryPath, fileType));
+  res.json(getOriginalTransactions(directoryPath, fileType, accountType));
 });
 
 router.get('/get-saved-transactions', (req, res, next) => {
   const filePath = path.join(
     import.meta.dirname,
-    '/saved-transactions-data/transactions.csv',
+    '/saved-transactions-data/transactions.json',
   );
   try {
     const transactions = getContentsOfFile(filePath);
@@ -29,17 +30,14 @@ router.get('/get-saved-transactions', (req, res, next) => {
   }
 });
 
-interface CSVSaveParams {
-  contents: string;
-}
-
-// curl -X PUT -H 'Content-Type: application/json' -d '{ "contents": "Posted Date,Reference Number,Payee,Address,Amount,Category" }' http://localhost:3000/api/save-transactions
-router.put('/save-transactions', (req: Request<CSVSaveParams>, res) => {
+// curl -X PUT -H 'Content-Type: application/json' -d '{ "JSON stringified transactions" }' http://localhost:3000/api/save-transactions
+router.put('/save-transactions', (req: Request<string>, res) => {
   const contents = req.body;
   const filePath = path.join(
     import.meta.dirname,
-    '/saved-transactions-data/transactions.csv',
+    '/saved-transactions-data/transactions.json',
   );
+  console.log(`filePath: ${filePath}`)
   fs.writeFileSync(filePath, JSON.stringify(contents, null, 2), {
     encoding: 'utf8',
     mode: 0o666,

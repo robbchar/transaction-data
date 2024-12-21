@@ -15,47 +15,66 @@ export const errorHandler = (
   });
 };
 
-// could be optimized for perf
-export function getOriginalTransactions(directoryPath: string, fileType: string): object[] {
+const getBOATransactions = (directoryPath: string, filenames: string[]): object[] => {
+  const transactions = filenames.map(filename => {
+    const filePath = path.join(directoryPath, 'BOA', filename);
+    const fileContents = getContentsOfFile(filePath);
+    const linesOfFile = fileContents.split('\n');
+    return linesOfFile.map(line => {
+      const [column1, column2, column3, column4, column5] = line.trim().split(',');
+      //BOA: Posted Date,Reference Number,Payee,Address,Amount
 
-  const transactions: object[] = [];
-  const directories = fs.readdirSync(directoryPath, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
-
-  directories.forEach(directoryName => {
-    const filenames = fs.readdirSync(path.join(directoryPath, directoryName))
-      .filter(file => path.extname(file) === fileType);
-
-    filenames.forEach(filename => {
-      const filePath = path.join(directoryPath, directoryName, filename);
-      const fileContents = getContentsOfFile(filePath);
-      const linesOfFile = fileContents.split('\n');
-
-      transactions.push(...linesOfFile.map(line => {
-        const [column1, column2, column3, column4, column5] = line.trim().split(',');
-        //BOA: Posted Date,Reference Number,Payee,Address,Amount
-        //fibre: 10/01,Withdrawal ACH Ameriprise Finc,-57.53,7686.81
-        let id = column2;
-        if (directoryName === 'fibre') {
-          const hash = crypto.createHash('sha256');
-          hash.update(line);
-          id = hash.digest('hex');
-        }
-
-        return directoryName === 'BOA' ? { date: column1, description: column3.replace(/\"/g, "").trim(), amount: column5, account: directoryName, id: id }
-          : { date: column1, description: column2, amount: column3, account: directoryName, id: id };
-      }).filter(transaction => transaction.id.trim() !== ''))
+      return { date: column1, description: column3.replace(/\"/g, "").trim(), amount: column5, account: 'BOA', id: column2 };
     });
   });
 
-  return transactions;
+  return transactions.flat();
+};
+
+const geFibreTransactions = (directoryPath: string, filenames: string[]): object[] => {
+  const transactions = filenames.map(filename => {
+    const filePath = path.join(directoryPath, filename);
+    const fileContents = getContentsOfFile(filePath);
+    const linesOfFile = fileContents.split('\n');
+    return linesOfFile.map(line => {
+      const [column1, column2, column3, column4, column5, column6, column7, column8] = line.trim().split(',');
+      //"Transaction ID","Posting Date","Effective Date","Transaction Type","Amount","Check Number","Reference Number","Description","Transaction Category","Type","Balance","Memo","Extended Description"
+
+      return { date: column2, description: column2, amount: column8, account: 'fibre', id: column1 };
+    });
+  });
+
+  return transactions.flat();
+};
+
+// could be optimized for perf
+export function getOriginalTransactions(directoryPath: string, fileType: string, accountType: string): object[] {
+  const directory = path.join(directoryPath, accountType);
+
+  const filenames = fs.readdirSync(directory)
+    .filter(file => path.extname(file) === fileType);
+  let transactionFunction;
+  if (accountType === 'BOA') {
+    transactionFunction = getBOATransactions;
+  } else if (accountType === 'fibre') {
+    transactionFunction = geFibreTransactions;
+  }
+
+  return transactionFunction ? transactionFunction(directoryPath, filenames) : [];
 }
 
+// strips out empty lines...
 export function getContentsOfFile(filePath: string) {
   try {
-    const contents = fs.readFileSync(filePath, 'utf-8');
-    return contents;
+    const contents = fs.readFileSync(filePath, 'utf-8')
+    const lines: string[] = contents.split('\n')
+      .filter(line => line.trim() !== ''); // remove empty lines;
+
+    if (filePath.endsWith('.csv') === true) {
+      lines.splice(0, 1) // remove first line, first line is the CSV header
+    }
+
+    return lines.join('\n'); // join the lines back together
   } catch (err) {
     // Handle the error
     throw err;
