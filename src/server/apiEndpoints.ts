@@ -37,7 +37,7 @@ router.put('/save-transactions', (req: Request<string>, res) => {
     import.meta.dirname,
     '/saved-transactions-data/transactions.json',
   );
-  console.log(`filePath: ${filePath}`)
+
   fs.writeFileSync(filePath, JSON.stringify(contents, null, 2), {
     encoding: 'utf8',
     mode: 0o666,

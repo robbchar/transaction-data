@@ -31,23 +31,29 @@ const getBOATransactions = (directoryPath: string, filenames: string[]): object[
   return transactions.flat();
 };
 
-const geFibreTransactions = (directoryPath: string, filenames: string[]): object[] => {
+const getFibreTransactions = (directoryPath: string, filenames: string[]): object[] => {
   const transactions = filenames.map(filename => {
-    const filePath = path.join(directoryPath, filename);
+    const filePath = path.join(directoryPath, 'fibre', filename);
     const fileContents = getContentsOfFile(filePath);
     const linesOfFile = fileContents.split('\n');
     return linesOfFile.map(line => {
-      const [column1, column2, column3, column4, column5, column6, column7, column8] = line.trim().split(',');
       //"Transaction ID","Posting Date","Effective Date","Transaction Type","Amount","Check Number","Reference Number","Description","Transaction Category","Type","Balance","Memo","Extended Description"
-
-      return { date: column2, description: column2, amount: column8, account: 'fibre', id: column1 };
+      const [column1, column2, column3, column4, column5, column6, column7, column8] = line.split(',');
+      // console.log(`column1: ${column1} colum2: ${column2} column3: ${column3} column4: ${column4} column5: ${column5} column6: ${column6} column7: ${column7} column8: ${column8} `);
+      return {
+        date: removeCharacterCaseInsensitive(column2, '"'), description: column8, amount: removeCharacterCaseInsensitive(column5, '"'), account: 'fibre', id: removeCharacterCaseInsensitive(column1, '"')
+      };
     });
   });
 
   return transactions.flat();
 };
 
-// could be optimized for perf
+function removeCharacterCaseInsensitive(str: string, char: string) {
+  const regex = new RegExp(char, 'gi');
+  return str.replace(regex, '');
+}
+
 export function getOriginalTransactions(directoryPath: string, fileType: string, accountType: string): object[] {
   const directory = path.join(directoryPath, accountType);
 
@@ -57,7 +63,7 @@ export function getOriginalTransactions(directoryPath: string, fileType: string,
   if (accountType === 'BOA') {
     transactionFunction = getBOATransactions;
   } else if (accountType === 'fibre') {
-    transactionFunction = geFibreTransactions;
+    transactionFunction = getFibreTransactions;
   }
 
   return transactionFunction ? transactionFunction(directoryPath, filenames) : [];
