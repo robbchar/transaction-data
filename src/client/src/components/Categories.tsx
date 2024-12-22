@@ -50,7 +50,10 @@ interface CategoriesProps {
 }
 
 const Categories: React.FC<CategoriesProps> = forwardRef(
-  ({ open, setOpen, chosenCategoryLabel = ' -- Select -- ', categoryChosen }, ref) => {
+  (
+    { open, setOpen, chosenCategoryLabel = ' -- Select -- ', categoryChosen },
+    ref,
+  ) => {
     const [selectedText, setSelectedText] = useState<string>(
       chosenCategoryLabel === '' ? ' -- Select -- ' : chosenCategoryLabel,
     );

@@ -10,14 +10,14 @@ const renderPage = () => {
   monthMap.set(1, [
     {
       date: date,
-      id: "1",
+      id: '1',
       description: 'Joe Blow',
       amount: 100,
       category: 'gum',
     },
   ]);
   const yearMap = new Map<number, Map<number, transaction[]>>();
-  yearMap.set(date.getFullYear(), monthMap)
+  yearMap.set(date.getFullYear(), monthMap);
   return {
     ...render(
       <DataContext.Provider
@@ -25,7 +25,7 @@ const renderPage = () => {
           originalData: [
             {
               date: date,
-              id: "1",
+              id: '1',
               description: 'Joe Blow',
               amount: 100,
               category: 'gum',
@@ -35,22 +35,22 @@ const renderPage = () => {
           dataToView: [
             {
               date: date,
-              id: "1",
+              id: '1',
               description: 'Joe Blow',
               amount: 100,
               category: 'gum',
             },
           ],
-          monthYearDisabled: { ["1"]: false }
+          monthYearDisabled: { ['1']: false },
         }}
       >
         <ViewTransactions />
       </DataContext.Provider>,
-    )
+    ),
   };
 };
 
-describe("ViewTransactions page", () => {
+describe('ViewTransactions page', () => {
   it('Renders', () => {
     renderPage();
   });
@@ -59,13 +59,13 @@ describe("ViewTransactions page", () => {
   it('The GroupBy button works', () => {
     const { getByLabelText, debug } = renderPage();
 
-    const typeRadio = getByLabelText('Expenses vs Deposits')
+    const typeRadio = getByLabelText('Expenses vs Deposits');
     fireEvent.click(typeRadio, { target: { value: GroupByEnum.Type } });
-    expect((typeRadio as HTMLInputElement).checked).toBe(true)
+    expect((typeRadio as HTMLInputElement).checked).toBe(true);
     // debug();
-    const categoryRadio = getByLabelText('Categories')
+    const categoryRadio = getByLabelText('Categories');
     fireEvent.click(categoryRadio, { target: { value: GroupByEnum.Category } });
-    expect((categoryRadio as HTMLInputElement).checked).toBe(true)
+    expect((categoryRadio as HTMLInputElement).checked).toBe(true);
     // debug();
   });
 });

@@ -9,7 +9,8 @@ import { formatDate, formatPrice } from '../utilities/functions.ts';
 
 const TransactionUl = styled.ul`
   padding: 0;
-`
+`;
+
 const TransactionLI = styled.li`
   list-style: none;
   display: flex;
@@ -27,7 +28,7 @@ const TransactionLI = styled.li`
       position: relative;
       justify-content: space-between;
       button {
-        width:15rem;
+        width: 15rem;
         margin: auto;
       }
     }
@@ -40,9 +41,11 @@ export default function EditTransactions() {
   const [accountType, setAccountType] = useState<string>('');
 
   const loadNewTransactions = async () => {
-    if (!accountType || accountType === 'select') return
+    if (!accountType || accountType === 'select') return;
 
-    const newData: transaction[] = await fetch(`/api/get-original-transactions/${accountType}`)
+    const newData: transaction[] = await fetch(
+      `/api/get-original-transactions/${accountType}`,
+    )
       .then(response => response.text())
       .then(responseText => JSON.parse(responseText));
 
@@ -77,9 +80,7 @@ export default function EditTransactions() {
           <TransactionUl>
             {context.originalData.map((transaction, index) => (
               <TransactionLI key={index}>
-                <div>
-                  {`${formatDate(transaction.date)}`}
-                </div>
+                <div>{`${formatDate(transaction.date)}`}</div>
                 <div>Account: {transaction.account}</div>
                 <div>Payee: {transaction.description}</div>
                 <div>Amount: {formatPrice(transaction.amount)}</div>
@@ -87,7 +88,7 @@ export default function EditTransactions() {
                   <Categories
                     chosenCategoryLabel={transaction.category ?? ''}
                     open={false}
-                    setOpen={() => { }}
+                    setOpen={() => {}}
                     categoryChosen={(newCategoryLabel: string) => {
                       transaction.category = newCategoryLabel;
                       saveTransactions(context.originalData);
@@ -98,7 +99,11 @@ export default function EditTransactions() {
             ))}
           </TransactionUl>
           <button onClick={loadNewTransactions}>Load new transactions.</button>
-          <select name="accountType" id="accountType" onChange={(e) => setAccountType(e.target.value)}>
+          <select
+            name="accountType"
+            id="accountType"
+            onChange={e => setAccountType(e.target.value)}
+          >
             <option value="select">Select an Account</option>
             <option value="fibre">fibre</option>
             <option value="BOA">BOA</option>

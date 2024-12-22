@@ -1,16 +1,31 @@
-import { useEffect, useState } from "react";
-import { transaction } from "../types/DataType";
-import StyledButton from "./Button";
+import { useEffect, useState } from 'react';
+import { transaction } from '../types/DataType';
+import StyledButton from './Button';
 
-var monthStrings = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"];
+var monthStrings = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
 
 interface DateButtonsProps {
-  organizedData: Map<number, Map<number, transaction[]>>
-  onDateChanged: (isDisabled: boolean, month: number, year: number) => void
+  organizedData: Map<number, Map<number, transaction[]>>;
+  onDateChanged: (isDisabled: boolean, month: number, year: number) => void;
 }
 
-const DateButtons: React.FC<DateButtonsProps> = ({ organizedData, onDateChanged }) => {
+const DateButtons: React.FC<DateButtonsProps> = ({
+  organizedData,
+  onDateChanged,
+}) => {
   const [buttons, setButtons] = useState<React.ReactElement[]>([]);
 
   const handleClick = (isDisabled: boolean, value: string): void => {
@@ -22,11 +37,30 @@ const DateButtons: React.FC<DateButtonsProps> = ({ organizedData, onDateChanged 
   useEffect(() => {
     const buttons: React.ReactElement[] = [];
     let index = 0;
-    organizedData.forEach((yearMap: Map<number, transaction[]>, year: number, map: Map<number, Map<number, transaction[]>>) => {
-      yearMap.forEach((transactions: transaction[], month: number, monthMap: Map<number, transaction[]>) => {
-        buttons.push(<StyledButton onClick={handleClick} key={index++} value={JSON.stringify([month, year])} label={`${monthStrings[month]} ${year}`} />)
-      });
-    });
+    organizedData.forEach(
+      (
+        yearMap: Map<number, transaction[]>,
+        year: number,
+        map: Map<number, Map<number, transaction[]>>,
+      ) => {
+        yearMap.forEach(
+          (
+            transactions: transaction[],
+            month: number,
+            monthMap: Map<number, transaction[]>,
+          ) => {
+            buttons.push(
+              <StyledButton
+                onClick={handleClick}
+                key={index++}
+                value={JSON.stringify([month, year])}
+                label={`${monthStrings[month]} ${year}`}
+              />,
+            );
+          },
+        );
+      },
+    );
     setButtons(buttons.reverse());
   }, [organizedData]);
 

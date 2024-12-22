@@ -9,21 +9,21 @@ it('Renders the EditTransactions page', () => {
   monthMap.set(1, [
     {
       date: new Date('1/1/2024'),
-      id: "1",
+      id: '1',
       description: 'Joe Blow',
       amount: 100,
       category: 'gum',
     },
   ]);
   const yearMap = new Map<number, Map<number, transaction[]>>();
-  yearMap.set(2004, monthMap)
+  yearMap.set(2004, monthMap);
   render(
     <DataContext.Provider
       value={{
         originalData: [
           {
             date: new Date('1/1/2024'),
-            id: "1",
+            id: '1',
             description: 'Joe Blow',
             amount: 100,
             category: 'gum',
@@ -33,13 +33,13 @@ it('Renders the EditTransactions page', () => {
         dataToView: [
           {
             date: new Date('1/1/2024'),
-            id: "1",
+            id: '1',
             description: 'Joe Blow',
             amount: 100,
             category: 'gum',
           },
         ],
-        monthYearDisabled: { ["1"]: false }
+        monthYearDisabled: { ['1']: false },
       }}
     >
       <EditTransactions />

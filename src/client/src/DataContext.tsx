@@ -5,7 +5,7 @@ const DataContext = createContext<ContextType>({
   organizedData: new Map(),
   dataToView: [],
   originalData: [],
-  monthYearDisabled: {}
+  monthYearDisabled: {},
 });
 
 export default DataContext;

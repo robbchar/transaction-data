@@ -8,10 +8,7 @@ import DataContext from './DataContext.tsx';
 import ErrorPage from './pages/ErrorPage.tsx';
 import ViewTransactions from './pages/ViewTransactions.tsx';
 import EditTransactions from './pages/EditTransActions.tsx';
-import {
-  getDataToView,
-  organizeTheData,
-} from './utilities/functions.ts';
+import { getDataToView, organizeTheData } from './utilities/functions.ts';
 import { ContextType } from './types/DataType.ts';
 import { getSavedTransactions } from './transactionsApi.ts';
 
@@ -19,10 +16,13 @@ const contextData: ContextType = {
   organizedData: new Map(),
   dataToView: [],
   originalData: await getSavedTransactions(),
-  monthYearDisabled: {}
+  monthYearDisabled: {},
 };
 contextData.organizedData = organizeTheData(contextData.originalData);
-contextData.dataToView = getDataToView(contextData.organizedData, contextData.monthYearDisabled);
+contextData.dataToView = getDataToView(
+  contextData.organizedData,
+  contextData.monthYearDisabled,
+);
 
 const router = createBrowserRouter([
   {

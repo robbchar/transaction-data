@@ -1,7 +1,15 @@
-import { ReactGoogleChartProps } from "react-google-charts";
-import { GroupByEnum, GroupByItemsAmounts, transaction, TransactionCategoriesAmounts } from "../types/DataType";
+import { ReactGoogleChartProps } from 'react-google-charts';
+import {
+  GroupByEnum,
+  GroupByItemsAmounts,
+  transaction,
+  TransactionCategoriesAmounts,
+} from '../types/DataType';
 
-export const getPieChartProps = (dataToView: transaction[], groupBy: GroupByEnum) => {
+export const getPieChartProps = (
+  dataToView: transaction[],
+  groupBy: GroupByEnum,
+) => {
   const chartOptions: ReactGoogleChartProps = {
     chartType: 'PieChart',
   };
@@ -11,7 +19,8 @@ export const getPieChartProps = (dataToView: transaction[], groupBy: GroupByEnum
     if (!transaction.category) return;
     if (groupBy === GroupByEnum.Category) {
       const key = transaction.category;
-      const amounnt = transaction.amount >= 0 ? transaction.amount : transaction.amount * -1;
+      const amounnt =
+        transaction.amount >= 0 ? transaction.amount : transaction.amount * -1;
 
       if (key in categoryData) {
         categoryData[key as keyof TransactionCategoriesAmounts] =
@@ -21,8 +30,11 @@ export const getPieChartProps = (dataToView: transaction[], groupBy: GroupByEnum
         categoryData[key as keyof TransactionCategoriesAmounts] = amounnt;
       }
     } else if (groupBy === GroupByEnum.Type) {
-      const key = transaction.description.startsWith('Deposit') ? 'Deposits' : 'Withdrawls';
-      const amounnt = transaction.amount >= 0 ? transaction.amount : transaction.amount * -1;
+      const key = transaction.description.startsWith('Deposit')
+        ? 'Deposits'
+        : 'Withdrawls';
+      const amounnt =
+        transaction.amount >= 0 ? transaction.amount : transaction.amount * -1;
 
       if (key in groupsByData) {
         groupsByData[key as keyof GroupByItemsAmounts] =
@@ -33,9 +45,10 @@ export const getPieChartProps = (dataToView: transaction[], groupBy: GroupByEnum
       }
     }
   });
-  chartOptions.data = groupBy === GroupByEnum.Category ?
-    [['Category', 'Amount'], ...Object.entries(categoryData)] :
-    [['Deposits', 'Withdrawls'], ...Object.entries(groupsByData)];
+  chartOptions.data =
+    groupBy === GroupByEnum.Category
+      ? [['Category', 'Amount'], ...Object.entries(categoryData)]
+      : [['Deposits', 'Withdrawls'], ...Object.entries(groupsByData)];
   chartOptions.width = '100%';
   chartOptions.height = '400px';
   chartOptions.legendToggle;

@@ -5,7 +5,9 @@ import { transaction } from './types/DataType';
 export const getSavedTransactions = async (): Promise<transaction[]> => {
   const transactions: transaction[] = await fetch(`/api/get-saved-transactions`)
     .then(response => response.text())
-    .then(responseText => responseText === '' ? [] : JSON.parse(responseText));
+    .then(responseText =>
+      responseText === '' ? [] : JSON.parse(responseText),
+    );
 
   transactions.forEach(transaction => {
     transaction.date = transaction.date

@@ -65,7 +65,7 @@ export type TransactionCategoriesTransactions = {
 
 export enum GroupByEnum {
   Type = 'Type',
-  Category = 'Category'
+  Category = 'Category',
 }
 
 export type GroupByItemsAmounts = {
@@ -82,7 +82,7 @@ export type MonthYearDisabledType = {
 
 export type ContextType = {
   originalData: transaction[];
-  organizedData: Map<number, Map<number, transaction[]>>//OrganizedYears;
+  organizedData: Map<number, Map<number, transaction[]>>;
   dataToView: transaction[];
   monthYearDisabled: MonthYearDisabledType;
 };

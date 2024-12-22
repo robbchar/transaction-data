@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
 
-import { transaction } from "../types/DataType";
-import DateButtons from "./DateButtons";
+import { transaction } from '../types/DataType';
+import DateButtons from './DateButtons';
 import { ECDH } from 'crypto';
 
 const renderButtons = (dateChangedFunction = () => null) => {
@@ -10,7 +10,7 @@ const renderButtons = (dateChangedFunction = () => null) => {
   monthMap.set(mayDate.getMonth(), [
     {
       date: mayDate,
-      id: "1",
+      id: '1',
       description: 'I bought a thing',
       amount: 100,
       category: 'things',
@@ -20,12 +20,15 @@ const renderButtons = (dateChangedFunction = () => null) => {
   yearMap.set(mayDate.getFullYear(), monthMap);
   return {
     ...render(
-      <DateButtons organizedData={yearMap} onDateChanged={dateChangedFunction} />
-    )
-  }
+      <DateButtons
+        organizedData={yearMap}
+        onDateChanged={dateChangedFunction}
+      />,
+    ),
+  };
 };
 
-describe("DateButtons component", () => {
+describe('DateButtons component', () => {
   it('clicking a button works', () => {
     const { getByText, container } = renderButtons();
     const button = getByText('May 2024');

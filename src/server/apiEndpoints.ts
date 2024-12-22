@@ -26,7 +26,7 @@ router.get('/get-saved-transactions', (req, res, next) => {
     const transactions = getContentsOfFile(filePath);
     res.send(transactions);
   } catch (err) {
-    next(err) // Pass errors to Express.
+    next(err); // Pass errors to Express.
   }
 });
 

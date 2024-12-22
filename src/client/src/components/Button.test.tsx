@@ -5,7 +5,9 @@ describe('Button component', () => {
   const mockOnClick = vi.fn();
 
   const renderButton = () => {
-    render(<Button onClick={mockOnClick} value="testValue" label="Test Label" />);
+    render(
+      <Button onClick={mockOnClick} value="testValue" label="Test Label" />,
+    );
   };
 
   it('renders correctly', () => {

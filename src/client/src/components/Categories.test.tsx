@@ -12,8 +12,8 @@ describe('Categories Component', () => {
         setOpen={mockSetOpen}
         chosenCategoryLabel={chosenCategoryLabel}
         categoryChosen={mockCategoryChosen}
-      />
-    )
+      />,
+    );
   };
 
   it('should render correctly', () => {
