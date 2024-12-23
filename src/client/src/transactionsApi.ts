@@ -21,9 +21,13 @@ export const getSavedTransactions = async (): Promise<transaction[]> => {
 };
 
 export const saveTransactions = (transactions: transaction[]) => {
+  const sortedTransactions = transactions.sort(
+    (a, b) => a.date.getTime() - b.date.getTime(),
+  );
+
   fetch(`/api/save-transactions`, {
     method: 'PUT',
-    body: JSON.stringify(transactions),
+    body: JSON.stringify(sortedTransactions),
     headers: {
       'Content-Type': 'application/json',
     },

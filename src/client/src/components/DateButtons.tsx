@@ -61,7 +61,7 @@ const DateButtons: React.FC<DateButtonsProps> = ({
         );
       },
     );
-    setButtons(buttons.reverse());
+    setButtons(buttons);
   }, [organizedData]);
 
   return buttons;
