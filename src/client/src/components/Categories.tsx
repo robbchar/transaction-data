@@ -59,7 +59,9 @@ const Categories: React.FC<CategoriesProps> = forwardRef(
     );
 
     const categoryClicked = (categoryName: string) => {
-      setSelectedText(categoryName);
+      setSelectedText(
+        Category[categoryName as keyof typeof Category].toString(),
+      );
       categoryChosen(categoryName);
       setOpen(false);
     };
@@ -71,7 +73,7 @@ const Categories: React.FC<CategoriesProps> = forwardRef(
           <MenuUl>
             {Object.keys(Category).map((value, index) => (
               <li key={index} onClick={() => categoryClicked(value)}>
-                {value}
+                {Category[value as keyof typeof Category].toString()}
               </li>
             ))}
           </MenuUl>

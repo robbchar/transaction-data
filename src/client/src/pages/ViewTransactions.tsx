@@ -175,7 +175,10 @@ export default function ViewTransactions() {
   ) => {
     if (!groups) return null;
     return getKeys(groups).map((groupTitle, groupIndex) => {
-      const transactions = groups[groupTitle];
+      const transactions =
+        groups[
+          groupTitle 
+        ];
       if (!transactions) return;
 
       return (
